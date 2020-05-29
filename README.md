@@ -28,10 +28,10 @@ The app for manager gihub repositories.
   - [X] Select repository page;
   - [X] Kaban board;
   - [X] Add new **Todo** page.
-- Create front-end;
-  - [X] Github login page;
-  - [X] Add repository page;
-  - [X] Select repository page;
-  - [X] Kaban board;
-  - [X] Add new **Todo** page.
-- Create back-end.
+- [ ] Create front-end;
+  - [ ] Github login page;
+  - [ ] Add repository page;
+  - [ ] Select repository page;
+  - [ ] Kaban board;
+  - [ ] Add new **Todo** page.
+- [ ] Create back-end.
