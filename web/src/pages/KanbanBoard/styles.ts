@@ -4,6 +4,7 @@ export const Container = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 export const RepoTitle = styled.div`
@@ -30,22 +31,24 @@ export const RepoTitle = styled.div`
 
 export const Boards = styled.div`
   display: flex;
-  flex: 1;
-  padding: 40px 36px 0px;
-  overflow-x: scroll;
+  height: calc(100% - 60px);
+  padding: 40px 20px 0px;
   flex-direction: row;
+  overflow-x: scroll;
 `;
 
 export const Board = styled.div`
-  min-width: 300px;
   background-color: #ffffff;
-  margin-right: 30px;
-
+  margin: 0 10px;
+  flex: 0 0 350px;
   padding: 28px 18px;
 
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+
+  max-height: calc(100%);
+  overflow-y: scroll;
 
   h2 {
     margin: 0 0 30px 0;

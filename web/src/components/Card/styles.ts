@@ -1,14 +1,19 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const Container = styled.div`
+interface ContainerProps {
+  color: string;
+  isDragging: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   width: 100%;
   padding: 15px;
   margin-bottom: 10px;
   background: #ffffff;
   box-shadow: 0px 0px 2px #0077b6;
   border-radius: 5px;
-  border-left: 5px solid #f9d825;
-
+  border-left: 5px solid ${(props) => props.color};
+  cursor: grab;
   .header {
     display: flex;
     flex-direction: row;
@@ -43,4 +48,16 @@ export const Container = styled.div`
 
     color: #777777;
   }
+
+  ${(props) =>
+    props.isDragging &&
+    css`
+      box-shadow: none;
+      border: none;
+      border: 1px dashed #e5e5e5;
+      .header,
+      p {
+        opacity: 0;
+      }
+    `}
 `;
