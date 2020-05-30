@@ -75,7 +75,6 @@ const BoardProvider: React.FC = ({ children }) => {
         draft[toBoardIndex].cards.push(item);
       }
     });
-    console.log(newBoards);
     setBoards(newBoards);
   };
   return (

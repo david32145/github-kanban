@@ -6,6 +6,7 @@ import { Container } from "./styles";
 
 interface DropZoneProps {
   boardIndex: number;
+  show: boolean;
 }
 
 interface DragObject {
@@ -14,7 +15,7 @@ interface DragObject {
   cardIndex: number;
 }
 
-const DropZone: React.FC<DropZoneProps> = ({ boardIndex }) => {
+const DropZone: React.FC<DropZoneProps> = ({ boardIndex, show }) => {
   const moveCard = useMoveCard();
   const [, dropRef] = (useDrop<DragObject, any, any>({
     accept: ["CARD"],
@@ -26,7 +27,11 @@ const DropZone: React.FC<DropZoneProps> = ({ boardIndex }) => {
       moveCard(currentBoardIndex, currentCardIndex, boardIndex, 0, true);
     },
   }) as unknown) as [any, React.MutableRefObject<HTMLInputElement>];
-  return <Container ref={dropRef}>Drop cards here...</Container>;
+  return (
+    <Container show={show} ref={dropRef}>
+      Drop cards here...
+    </Container>
+  );
 };
 
 export default DropZone;

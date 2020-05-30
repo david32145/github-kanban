@@ -1,11 +1,17 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface ContainerProps {
+  show: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   display: flex;
-  height: calc(100% - 28px - 38px);
+  height: ${(props) => (props.show ? "120px" : "0px")};
+  overflow: hidden;
   background-color: #f6fcfe;
   justify-content: center;
   align-items: center;
+  border-radius: 4px;
 
   font-family: Roboto;
   font-weight: 300;
