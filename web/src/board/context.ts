@@ -19,7 +19,8 @@ interface BoardContext {
     fromBoardIndex: number,
     fromCardIndex: number,
     toBoardIndex: number,
-    toCardIndex: number
+    toCardIndex: number,
+    toBoardIsEmpty?: boolean
   ) => void;
 }
 

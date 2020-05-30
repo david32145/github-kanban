@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import produce from "immer";
 import BoardContext, { Board } from "./context";
 
@@ -59,23 +59,24 @@ const boardsFaker: Board[] = [
 
 const BoardProvider: React.FC = ({ children }) => {
   const [boards, setBoards] = useState<Board[]>(boardsFaker);
-  useEffect(() => {
-    console.log(boards);
-  }, [boards]);
   const move = (
     fromBoardIndex: number,
     fromCardIndex: number,
     toBoardIndex: number,
-    toCardIndex: number
+    toCardIndex: number,
+    toBoardIsEmpty = false
   ) => {
-    setBoards(
-      produce(boards, (draft) => {
-        const item = draft[fromBoardIndex].cards[fromCardIndex];
-        console.log(fromBoardIndex, fromCardIndex, draft);
-        draft[fromBoardIndex].cards.splice(fromCardIndex, 1);
+    const newBoards = produce(boards, (draft) => {
+      const item = draft[fromBoardIndex].cards[fromCardIndex];
+      draft[fromBoardIndex].cards.splice(fromCardIndex, 1);
+      if (!toBoardIsEmpty) {
         draft[toBoardIndex].cards.splice(toCardIndex, 0, item);
-      })
-    );
+      } else {
+        draft[toBoardIndex].cards.push(item);
+      }
+    });
+    console.log(newBoards);
+    setBoards(newBoards);
   };
   return (
     <BoardContext.Provider value={{ boards, move }}>
