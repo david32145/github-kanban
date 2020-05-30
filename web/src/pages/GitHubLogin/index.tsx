@@ -1,15 +1,16 @@
 import React from "react";
 
-import Button from "components/Button"
+import Button from "components/Button";
 
 import GitHubLogo from "assets/github-logo.png";
 
-import { Container } from "./styles"
+import { Container } from "./styles";
 
 const GitHubLoginPage: React.FC = () => {
-
-  function handleSingIn(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-    console.log('GitHub singIn...')
+  function handleSingIn(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void {
+    console.log(event);
   }
 
   return (
@@ -22,10 +23,12 @@ const GitHubLoginPage: React.FC = () => {
             <h5>You must be logged.</h5>
           </div>
         </div>
-        <Button onClick={handleSingIn} className="sing-in-button">Sing In</Button>
+        <Button onClick={handleSingIn} className="sing-in-button">
+          Sing In
+        </Button>
       </div>
     </Container>
-  )
-}
+  );
+};
 
 export default GitHubLoginPage;

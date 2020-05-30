@@ -9,7 +9,7 @@ export const Container = styled.div`
   .login-box {
     width: 450px;
     padding: 40px;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 2px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
 
@@ -39,14 +39,14 @@ export const Container = styled.div`
         color: #000000;
       }
 
-      h5{
+      h5 {
         margin: 10px 0 0;
         padding: 0;
         font-family: Roboto;
         font-weight: 300;
         font-size: 18px;
 
-        color: #4D4D4D;
+        color: #4d4d4d;
       }
     }
   }

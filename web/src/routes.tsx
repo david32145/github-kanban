@@ -1,10 +1,12 @@
 import React from "react";
 
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import GitHubLoginPage from "pages/GitHubLogin"
+import GitHubLoginPage from "pages/GitHubLogin";
+import RepoNewPage from "pages/Repo/New";
+import RepoListPage from "pages/Repo/List";
 
-import HeaderComponent from "components/Header"
+import HeaderComponent from "components/Header";
 
 const routes: React.FC = () => {
   return (
@@ -12,9 +14,11 @@ const routes: React.FC = () => {
       <HeaderComponent />
       <Switch>
         <Route path="/login" exact component={GitHubLoginPage} />
+        <Route path="/repo/new" exact component={RepoNewPage} />
+        <Route path="/repos" exact component={RepoListPage} />
       </Switch>
     </BrowserRouter>
-  )
-}
+  );
+};
 
 export default routes;
