@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Container = styled.table`
   display: block;
-  width: 100%;
   thead,
   tbody,
   tr {

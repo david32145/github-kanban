@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  height: 100%;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
   .repo-box {
     background: #ffffff;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
@@ -9,7 +12,7 @@ export const Container = styled.div`
     padding: 28px;
     width: 1000px;
 
-    margin: 80px auto;
+    margin: 80px 0;
     h2 {
       font-family: Roboto;
       font-weight: 400;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export const Container = styled.header`
   width: 100%;
-  height: 65px;
+  min-height: 60px;
   background-color: #ffffff;
   border-bottom: 3px solid #0077b6;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
@@ -20,7 +20,7 @@ interface LinkButtonProps {
 export const LinkButton = styled(Link)<LinkButtonProps>`
   text-decoration: none;
   color: ${({ pathname, to }) => (pathname === to ? "#0077B6" : "#333333")};
-  font-size: 15px;
+  font-size: 14px;
   text-transform: uppercase;
   font-family: Roboto, Arial, Helvetica, sans-serif;
   font-weight: 500;

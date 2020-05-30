@@ -6,6 +6,8 @@ import GitHubLoginPage from "pages/GitHubLogin";
 import RepoNewPage from "pages/Repo/New";
 import RepoListPage from "pages/Repo/List";
 
+import KanbanBoardPage from "pages/KanbanBoard";
+
 import HeaderComponent from "components/Header";
 
 const routes: React.FC = () => {
@@ -16,6 +18,7 @@ const routes: React.FC = () => {
         <Route path="/login" exact component={GitHubLoginPage} />
         <Route path="/repo/new" exact component={RepoNewPage} />
         <Route path="/repos" exact component={RepoListPage} />
+        <Route path="/board" exact component={KanbanBoardPage} />
       </Switch>
     </BrowserRouter>
   );
