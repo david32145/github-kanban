@@ -3,7 +3,8 @@ import { AxiosError } from 'axios'
 import GitHubAPI from 'services/githubApi'
 import RepositoryModel, { Repository } from 'models/Repository'
 import BoardModel from 'models/Board'
-import { extractAPIError, getDefauldBoards } from 'utils/apiError'
+import { extractAPIError } from 'utils/apiError'
+import { getDefauldBoards } from 'utils/boardUtils'
 
 interface RepositoryCreateBody {
   repo_name: string

@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios'
-import { Board } from 'models/Board'
 
 export function extractAPIError (error: AxiosError) {
   if (error.response) {
@@ -23,29 +22,4 @@ export function extractAPIError (error: AxiosError) {
     status: 500,
     message: 'No server connection'
   }
-}
-
-export function getDefauldBoards (): Board[] {
-  return [
-    {
-      color: '#F9D825',
-      cards: [],
-      type: 'TODO'
-    },
-    {
-      color: '#29E548',
-      cards: [],
-      type: 'DOING'
-    },
-    {
-      color: '#7B2CBF',
-      cards: [],
-      type: 'REVIEW'
-    },
-    {
-      color: '#F72585',
-      cards: [],
-      type: 'CLOSED'
-    }
-  ]
 }
