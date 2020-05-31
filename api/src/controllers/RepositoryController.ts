@@ -52,15 +52,9 @@ class RepositoryController {
     }
   }
 
-  public async show (req: Request, res: Response): Promise<Response> {
-    const repository = await RepositoryModel.findById(req.params.id)
-      .populate('boards')
-    return res.status(200).send(repository)
-  }
-
   public async index (req: Request, res: Response): Promise<Response> {
     const repositories = await RepositoryModel.find()
-      .populate('boards')
+      .select('-boards') // exclude boards
       .exec()
     return res.status(200).send(repositories)
   }
