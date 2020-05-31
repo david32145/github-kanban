@@ -1,7 +1,7 @@
-import moduleAlias from "module-alias"
-moduleAlias.addPath("./dist")
+import moduleAlias from 'module-alias'
 
-import app from "./app"
+import app from './app'
+moduleAlias.addPath('./dist')
 
 const PORT = process.env.PORT || 3333
 
