@@ -9,7 +9,7 @@ export interface User {
 
 type UserDocument = User & mongoose.Document
 
-const UserScheme = new mongoose.Schema({
+export const UserScheme = new mongoose.Schema({
   id: {
     type: Number,
     required: true

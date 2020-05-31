@@ -2,18 +2,23 @@ import mongoose from 'mongoose'
 import { Board } from './Board'
 
 export interface Repository {
-  id: number
+  repo_id: number
+  repo_url: string
   name: string
   owner: string
   description: string
   boards: Board[]
 }
 
-type RepositoryDocument = Repository & mongoose.Document
+interface RepositoryDocument extends Repository, mongoose.Document {}
 
 const RepositoryScheme = new mongoose.Schema({
-  id: {
+  repo_id: {
     type: Number,
+    required: true
+  },
+  repo_url: {
+    type: String,
     required: true
   },
   name: {

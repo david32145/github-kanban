@@ -1,23 +1,54 @@
 import { Request, Response } from 'express'
+import { AxiosError } from 'axios'
+import GitHubAPI from 'services/githubApi'
 import RepositoryModel, { Repository } from 'models/Repository'
+import BoardModel from 'models/Board'
+import { extractAPIError, getDefauldBoards } from 'utils/apiError'
 
 interface RepositoryCreateBody {
-  repoName: string
+  repo_name: string
+  repo_owner: string
+}
+
+interface GitHubRepoResponse {
   id: number
+  name: string
+  owner: {
+    login: string
+  }
+  description: string
+  html_url: string
 }
 
 class RepositoryController {
   public async store (req: Request<{}, {}, RepositoryCreateBody>, res: Response): Promise<Response> {
-    const repo: Repository = {
-      name: req.body.repoName,
-      description: 'A framework for building native apps with React.',
-      id: req.body.id,
-      owner: 'facebook'
+    const { repo_name, repo_owner } = req.body
+    try {
+      let repository: Repository | null = await RepositoryModel.findOne()
+        .where({ name: repo_name, owner: repo_owner })
+        .populate('boards')
+        .lean()
+      if (repository) {
+        return res.status(200).send(repository)
+      }
+      const response = await GitHubAPI.get<GitHubRepoResponse>(`/repos/${repo_owner}/${repo_name}`)
+
+      const boards = await BoardModel.create(getDefauldBoards())
+      repository = {
+        repo_url: response.data.html_url,
+        boards: boards.map(board => board._id),
+        description: response.data.description,
+        name: response.data.name,
+        owner: response.data.owner.login,
+        repo_id: response.data.id
+      }
+      const createdRepository = await RepositoryModel.create(repository)
+      await createdRepository.populate('boards').execPopulate()
+      return res.status(201).send(createdRepository)
+    } catch (err) {
+      const error = extractAPIError(err as AxiosError)
+      return res.status(error.status).send(error)
     }
-
-    const createdRepo = await RepositoryModel.create(repo)
-
-    return res.status(201).send(createdRepo)
   }
 
   public async show (req: Request, res: Response): Promise<Response> {

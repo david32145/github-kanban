@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { Board } from './Board'
 
-export interface User {
+export interface Card {
   issue_id: number
   issue_url: string
   title: string
@@ -13,9 +13,9 @@ export interface User {
   closed_at: Date
 }
 
-type UserDocument = User & mongoose.Document
+type CardDocument = Card & mongoose.Document
 
-const UserScheme = new mongoose.Schema({
+export const CardScheme = new mongoose.Schema({
   issue_id: {
     type: Number,
     required: true
@@ -36,15 +36,9 @@ const UserScheme = new mongoose.Schema({
     type: Number,
     required: true
   },
-  board: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Boards'
-  },
-  created_at: Date,
-  update_at: Date,
   closed_at: Date
 }, {
-  timestamps: true
+  timestamps: { createdAt: 'created_at', updatedAt: 'update_at' }
 })
 
-export default mongoose.model<UserDocument>('Users', UserScheme)
+export default mongoose.model<CardDocument>('Cards', CardScheme)

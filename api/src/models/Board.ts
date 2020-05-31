@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
-import { Repository } from './Repository'
+import { Card } from './Card'
 
 export interface Board {
   type: 'TODO' | 'DOING' | 'REVIEW' | 'CLOSED'
-  repository: Repository
+  cards: Card[]
   color: string
 }
 
@@ -15,15 +15,14 @@ export const BoardScheme = new mongoose.Schema({
     uppercase: true,
     enum: ['TODO', 'DOING', 'REVIEW', 'CLOSED']
   },
-  repository: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Repositories',
-    required: true
-  },
   color: {
     type: String,
     required: true
-  }
+  },
+  cards: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Cards'
+  }]
 })
 
 export default mongoose.model<BoardDocument>('Boards', BoardScheme)
