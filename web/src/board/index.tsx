@@ -14,6 +14,13 @@ const boardsFaker: Board[] = [
           "Add native support  for floating action button on react native.",
         issueId: 10,
       },
+      {
+        color: "#F9D825",
+        title: "Add native FAP button",
+        description:
+          "Add native support  for floating action button on react native.",
+        issueId: 12,
+      },
     ],
   },
   {
