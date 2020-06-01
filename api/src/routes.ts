@@ -1,9 +1,14 @@
 import { Router } from 'express'
 
+import AuthController from 'controllers/AuthController'
 import RepositoryController from 'controllers/RepositoryController'
 import CardController from 'controllers/CardController'
 
 const routes = Router()
+
+routes
+  .get('/getUser', AuthController.listUser)
+  .get('/login', AuthController.store)
 
 routes
   .get('/repositories', RepositoryController.index)

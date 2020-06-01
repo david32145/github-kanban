@@ -31,7 +31,7 @@ export const RepoTitle = styled.div`
 
 export const FormContainer = styled.form`
   margin: 40px auto;
-  width: 500px;
+  width: 450px;
   h2 {
     font-family: Roboto;
     font-weight: bold;

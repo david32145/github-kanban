@@ -19,8 +19,7 @@ export const UserScheme = new mongoose.Schema({
     required: true
   },
   description: {
-    type: String,
-    required: true
+    type: String
   },
   access_token: {
     type: String,
