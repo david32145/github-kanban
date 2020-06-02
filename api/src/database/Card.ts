@@ -7,6 +7,7 @@ class Card extends Model {
   private issue_url!: string
   private title!: string
   private description?: string
+  private number!: number
   private order!: number
   private board_id!: number
   private readonly createdAt!: Date
@@ -30,6 +31,10 @@ Card.init({
   description: {
     type: DataTypes.STRING
   },
+  number: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false
+  },
   order: {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false
@@ -46,5 +51,10 @@ Card.init({
     type: DataTypes.DATE
   }
 }, { sequelize, tableName: 'cards' })
+
+Card.belongsTo(Board, {
+  as: 'boards',
+  foreignKey: 'board_id'
+})
 
 export default Card

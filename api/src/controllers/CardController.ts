@@ -1,9 +1,9 @@
-import { Request, Response, response } from 'express'
-import RepositoryModel from 'models/Repository'
-import UserModel from 'models/User'
+import { Request, Response } from 'express'
+import Repository from 'database/Repository'
+import User from 'database/User'
 import GitHubAPI from 'services/githubApi'
-import CardModel from 'models/Card'
-import BoardModel from 'models/Board'
+import Board from 'database/Board'
+import Card from 'database/Card'
 
 interface CardCreateRequest {
   title: string
@@ -17,15 +17,22 @@ type RouteParams = {
 
 interface GitHubIssueCreateResponse {
   id: number
-  url: string
+  html_url: string,
+  number: number
 }
 
 class CardController {
   public async store (req: Request<RouteParams, {}, CardCreateRequest>, res: Response): Promise<Response> {
-    const repository = await RepositoryModel.findById(req.params.repository_id)
+    const user_id = req.headers.authorization as string
+    const repository: Repository = await Repository.findOne({
+      where: {
+        repository_id: req.params.repository_id,
+        user_id
+      }
+    })
     if (repository) {
-      const user = await UserModel.findOne().lean()
-      const response = await GitHubAPI.post<GitHubIssueCreateResponse>(`repos/${user?.name}/${repository.name}/issues`, {
+      const user: User = await User.findByPk(user_id)
+      const response = await GitHubAPI.post<GitHubIssueCreateResponse>(`repos/${user?.username}/${repository.name}/issues`, {
         title: req.body.title,
         body: req.body.github_description
       }, {
@@ -33,16 +40,30 @@ class CardController {
           Authorization: `token ${user?.access_token}`
         }
       })
-      const count = await RepositoryModel.count({
-        _id: repository._id,
-        'boards.title': 'TODO'
+      const countCardsOpened = await Card.count({
+        where: {
+          '$boards.type$': 'TODO',
+          '$boards.repository_id$': repository.repository_id
+        },
+        include: ['boards']
       })
-      const card = await CardModel.create({
+      const board: Board = await Board.findOne({
+        where: {
+          repository_id: req.params.repository_id,
+          type: 'TODO'
+        }
+      })
+      const card = await Card.create({
         issue_id: response.data.id,
-        issue_url: response.data.url,
+        issue_url: response.data.html_url,
         title: req.body.title,
-        description: req.body.description
+        number: response.data.number,
+        description: req.body.description,
+        order: countCardsOpened + 1,
+        board_id: board.id
       })
+
+      return res.status(201).json(card)
     }
     return res.status(404).send({
       error: 'REPOSITORY_NOT_FOUND',

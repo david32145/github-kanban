@@ -26,8 +26,8 @@ class RepositoryController {
   public async store (req: Request<{}, {}, RepositoryCreateBody>, res: Response): Promise<Response> {
     const { repo_name, repo_owner } = req.body
     try {
-      const username = req.headers.authorization as string
-      const user: User = await User.findOne({ where: { username } })
+      const user_id = req.headers.authorization as string
+      const user: User = await User.findByPk(user_id)
       const response = await GitHubAPI.get<GitHubRepoResponse>(`/repos/${repo_owner}/${repo_name}`, {
         headers: {
           Authorization: `token ${user.access_token}`

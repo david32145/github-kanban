@@ -28,6 +28,10 @@ module.exports = {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false
       },
+      number: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false
+      },
       board_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
