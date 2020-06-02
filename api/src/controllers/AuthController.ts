@@ -55,11 +55,6 @@ class AuthController {
     }
     return res.status(400).send('Algo deu errado')
   }
-
-  public async listUser (req: Request, res: Response): Promise<Response> {
-    const user = await UserModel.findOne().lean()
-    return res.json(user)
-  }
 }
 
 export default new AuthController()

@@ -7,7 +7,6 @@ import CardController from 'controllers/CardController'
 const routes = Router()
 
 routes
-  .get('/getUser', AuthController.listUser)
   .get('/login', AuthController.store)
 
 routes
