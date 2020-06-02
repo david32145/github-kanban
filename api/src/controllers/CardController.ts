@@ -41,8 +41,7 @@ class CardController {
         issue_id: response.data.id,
         issue_url: response.data.url,
         title: req.body.title,
-        description: req.body.description,
-        order: 
+        description: req.body.description
       })
     }
     return res.status(404).send({

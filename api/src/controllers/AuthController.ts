@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import axios from 'axios'
 import GitHubAPI from 'services/githubApi'
 
-import UserModel from 'models/User'
+import User from 'database/User'
 
 const credentials = {
   client_id: '94704ff763ce7e8489e9',
@@ -41,17 +41,31 @@ class AuthController {
           Authorization: `token ${authResponse.data.access_token}`
         }
       })
+      type X = [User, boolean]
+      const [user, created]: X = await User.findOrCreate({
+        where: {
+          username: userResponse.data.login
+        },
+        defaults: {
+          username: userResponse.data.login,
+          description: userResponse.data.bio,
+          access_token: authResponse.data.access_token
+        }
+      })
 
-      await UserModel.updateOne({
-        id: userResponse.data.id
-      }, {
-        id: userResponse.data.id,
-        name: userResponse.data.login,
-        description: userResponse.data.bio,
-        access_token: authResponse.data.access_token
-      }, { upsert: true })
+      if (!created) {
+        user.access_token = authResponse.data.access_token
+        user.username = userResponse.data.login
+        user.description = userResponse.data.bio
+      }
 
-      return res.status(200).send()
+      return res.status(200).json({
+        id: user.id,
+        username: user.username,
+        description: user.description,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      })
     }
     return res.status(400).send('Algo deu errado')
   }

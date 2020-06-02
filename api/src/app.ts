@@ -10,9 +10,4 @@ app.use(express.json())
 app.use(cors())
 app.use(routes)
 
-mongoose.connect('mongodb://localhost:27017/githubkaban', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-
 export default app
