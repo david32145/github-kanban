@@ -1,5 +1,7 @@
 const { DataTypes, QueryInterface } = require('sequelize')
-QueryInterface.name()
+if (QueryInterface) {
+  console.log('In Typescript')
+}
 
 module.exports = {
   /**
