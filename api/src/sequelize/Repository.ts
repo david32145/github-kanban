@@ -1,4 +1,5 @@
 import { Model, DataTypes } from 'sequelize'
+import User from './User'
 
 import sequelize from './database'
 
@@ -7,7 +8,10 @@ class Repository extends Model {
   public repository_url!: string
   public name!: string
   public owner!: string
+  public user_id!: number
   public description?: string
+
+  public readonly user?: User;
 }
 
 Repository.init({
@@ -26,6 +30,14 @@ Repository.init({
   owner: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: User,
+      key: 'id'
+    }
   },
   description: {
     type: DataTypes.STRING

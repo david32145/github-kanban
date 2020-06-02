@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import sequelize from './database'
+import Board from './Board'
 
 class Card extends Model {
   private issue_id!: number
@@ -7,9 +8,10 @@ class Card extends Model {
   private title!: string
   private description?: string
   private order!: number
-  private readonly createdAt: Date
-  private readonly updateAt: Date
-  private closedAt: Date
+  private board_id!: number
+  private readonly createdAt!: Date
+  private readonly updateAt!: Date
+  private closedAt!: Date
 }
 
 Card.init({
@@ -31,6 +33,14 @@ Card.init({
   order: {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false
+  },
+  board_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Board,
+      key: 'id'
+    }
   },
   closedAt: {
     type: DataTypes.DATE
