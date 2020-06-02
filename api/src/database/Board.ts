@@ -36,7 +36,8 @@ Board.init({
   }
 }, {
   sequelize,
-  tableName: 'boards'
+  tableName: 'boards',
+  timestamps: false
 })
 
 export default Board

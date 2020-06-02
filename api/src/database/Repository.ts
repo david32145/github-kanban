@@ -44,7 +44,7 @@ Repository.init({
   }
 }, {
   sequelize,
-  tableName: 'users'
+  tableName: 'repositories'
 })
 
 export default Repository

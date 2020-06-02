@@ -1,26 +1,24 @@
-import { Board } from 'models/Board'
-
-export function getDefauldBoards (): Board[] {
+export function getDefauldBoards (repository_id: number) {
   return [
     {
       color: '#F9D825',
-      cards: [],
-      type: 'TODO'
+      type: 'TODO',
+      repository_id
     },
     {
       color: '#29E548',
-      cards: [],
-      type: 'DOING'
+      type: 'DOING',
+      repository_id
     },
     {
       color: '#7B2CBF',
-      cards: [],
-      type: 'REVIEW'
+      type: 'REVIEW',
+      repository_id
     },
     {
       color: '#F72585',
-      cards: [],
-      type: 'CLOSED'
+      type: 'CLOSED',
+      repository_id
     }
   ]
 }

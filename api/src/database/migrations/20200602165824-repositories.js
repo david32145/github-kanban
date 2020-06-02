@@ -39,6 +39,12 @@ module.exports = {
       },
       description: {
         type: DataTypes.STRING
+      },
+      createdAt: {
+        type: DataTypes.DATE
+      },
+      updatedAt: {
+        type: DataTypes.DATE
       }
     })
   },
