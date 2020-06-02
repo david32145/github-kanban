@@ -8,23 +8,40 @@ module.exports = {
    * @param {QueryInterface} queryInterface
    */
   up: (queryInterface) => {
-    return queryInterface.createTable('users', {
-      id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        autoIncrement: true,
+    return queryInterface.createTable('cards', {
+      issue_id: {
+        type: DataTypes.INTEGER,
         primaryKey: true
       },
-      username: {
+      issue_url: {
         type: DataTypes.STRING,
-        unique: true,
+        allowNull: false
+      },
+      title: {
+        type: DataTypes.STRING,
         allowNull: false
       },
       description: {
         type: DataTypes.STRING
       },
-      access_token: {
-        type: DataTypes.STRING,
+      order: {
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false
+      },
+      board_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'boards'
+          },
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      },
+      closedAt: {
+        type: DataTypes.DATE
       },
       createdAt: {
         type: DataTypes.DATE
@@ -39,6 +56,6 @@ module.exports = {
    * @param {QueryInterface} queryInterface
    */
   down: (queryInterface) => {
-    return queryInterface.dropTable('users')
+    return queryInterface.dropTable('cards')
   }
 }
