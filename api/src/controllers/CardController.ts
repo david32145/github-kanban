@@ -86,22 +86,67 @@ class CardController {
     const card: Card = await Card.findByPk(card_id)
     const oldBoardId = card.board_id
     const oldOrder = card.order
-    console.log(toBoardCount)
-    if (toBoardCount === 0) {
-      card.board_id = Number(to_board_id)
-      card.order = 1
-      await card.save()
-    }
-    await Card.increment({
-      order: -1
-    }, {
-      where: {
-        board_id: oldBoardId,
-        order: {
-          [Op.gt]: oldOrder
-        }
+    if (card.board_id === Number(to_board_id)) {
+      const toCard: Card = await Card.findByPk(to_card_id)
+      if (card.order < toCard.order) {
+        await Card.increment({
+          order: -1
+        }, {
+          where: {
+            board_id: oldBoardId,
+            order: {
+              [Op.gt]: oldOrder,
+              [Op.lte]: toCard.order
+            }
+          }
+        })
+      } else {
+        await Card.increment({
+          order: 1
+        }, {
+          where: {
+            board_id: oldBoardId,
+            order: {
+              [Op.lt]: oldOrder,
+              [Op.gte]: toCard.order
+            }
+          }
+        })
       }
-    })
+      card.order = toCard.order
+      await card.save()
+    } else {
+      if (toBoardCount === 0) {
+        card.board_id = Number(to_board_id)
+        card.order = 1
+        await card.save()
+      } else {
+        const toCard: Card = await Card.findByPk(to_card_id)
+        await Card.increment({
+          order: 1
+        }, {
+          where: {
+            board_id: to_board_id,
+            order: {
+              [Op.gte]: toCard.order
+            }
+          }
+        })
+        card.order = toCard.order
+        card.board_id = Number(to_board_id)
+        await card.save()
+      }
+      await Card.increment({
+        order: -1
+      }, {
+        where: {
+          board_id: oldBoardId,
+          order: {
+            [Op.gt]: oldOrder
+          }
+        }
+      })
+    }
     return res.status(200).json({
       card_id,
       to_board_id,
