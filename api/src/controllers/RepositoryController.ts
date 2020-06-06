@@ -7,6 +7,7 @@ import Repository from 'database/Repository'
 import { extractAPIError } from 'utils/apiError'
 import { getDefauldBoards } from 'utils/boardUtils'
 import Sequelize from 'sequelize'
+import Card from 'database/Card'
 
 interface RepositoryCreateBody {
   repo_name: string
@@ -63,8 +64,20 @@ class RepositoryController {
       include: [{
         association: 'boards',
         include: ['cards']
-      }]
+      }],
+      order: [[
+        {
+          model: Board,
+          as: 'boards'
+        },
+        'id',
+        'ASC'
+      ], [
+        { model: Board, as: 'boards' }, { model: Card, as: 'cards' }, 'order', 'ASC'
+      ]]
+
     })
+
     return res.status(200).json(repository)
   }
 
@@ -72,6 +85,7 @@ class RepositoryController {
     const repositories = await Repository.findAll({
       attributes: {
         include: [
+
           [
             Sequelize.literal(`(
               SELECT count(*) FROM cards JOIN boards on
@@ -90,6 +104,7 @@ class RepositoryController {
             'total_cards'
           ]
         ]
+
       }
     })
     return res.status(200).send(repositories)

@@ -1,6 +1,6 @@
 {
   "watch": ["./src"],
   "execMap": {
-    "ts": "node --inspect -r tsconfig-paths/register -r sucrase/register"
+    "ts": "node -r tsconfig-paths/register -r sucrase/register"
   }
 }
