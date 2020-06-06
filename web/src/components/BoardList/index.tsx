@@ -12,11 +12,20 @@ const BoardList: React.FC = () => {
   const boards = useSelector<RootState, BoardModel[]>(
     (state) => state.board.boards
   );
+
+  function getTitleFromType(type: string): string {
+    if (type === "TODO") return "Todo";
+    if (type === "DOING") return "Doing";
+    if (type === "REVIEW") return "Review";
+    if (type === "CLOSED") return "Closed";
+    return "Unknown";
+  }
+
   return (
     <Boards>
       {boards.map((board, index) => (
-        <Board key={board.title}>
-          <h2>{board.title}</h2>
+        <Board key={board.id}>
+          <h2>{getTitleFromType(board.type)}</h2>
           {board.cards.map((card, cardIndex) => (
             <Card
               key={card.issueId}

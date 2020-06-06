@@ -23,7 +23,8 @@ export interface Card {
 }
 
 export interface Board {
-  title: string;
+  id: number;
+  type: string;
   creatable: boolean;
   cards: Card[];
 }
@@ -35,6 +36,7 @@ export interface Repository {
   owner: string;
   user_id: number;
   description?: string;
+  boards: Board[];
   completed_cards: number;
   total_cards: number;
 }

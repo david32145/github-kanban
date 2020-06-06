@@ -1,9 +1,10 @@
 import producer from "immer";
 import { Board, MoveCardOptions } from "models";
-import { boardsFaker } from "./faker";
 
 export enum ActionBoardTypes {
   MOVE_LOCAL_BOARD = "@board/move_local_board",
+
+  SET_BOARDS = "@board/set_boards",
 
   ASYNC_MOVE_SERVER_BOARD = "@board/async_move_server_board",
   SUCCESS_MOVE_SERVER_BOARD = "@board/success_move_server_board",
@@ -18,7 +19,8 @@ export interface State {
 
 export interface BoardAction {
   type: ActionBoardTypes;
-  moveOptions: MoveCardOptions;
+  moveOptions?: MoveCardOptions;
+  boards?: Board[];
 }
 
 export interface BoardSagaAction {
@@ -28,11 +30,12 @@ export interface BoardSagaAction {
 
 const INITIAL_STATE: State = {
   loading: false,
-  boards: boardsFaker,
+  boards: [],
 };
 
 function moveLocalBoard(state = INITIAL_STATE, action: BoardAction): State {
   return producer(state, (draft) => {
+    if (!action.moveOptions) return;
     const {
       moveOptions: { fromBoard, fromCard, toBoard, toCard, toBoardIsEmpty },
     } = action;
@@ -54,6 +57,8 @@ export function boardReducer(
   switch (action.type) {
     case ActionBoardTypes.MOVE_LOCAL_BOARD:
       return moveLocalBoard(state, action);
+    case ActionBoardTypes.SET_BOARDS:
+      return { ...state, boards: action.boards || [] };
     default:
       return state;
   }
@@ -64,6 +69,13 @@ class BoardService {
     return {
       type: ActionBoardTypes.MOVE_LOCAL_BOARD,
       moveOptions: options,
+    };
+  }
+
+  public setBoards(boards: Board[]): BoardAction {
+    return {
+      type: ActionBoardTypes.SET_BOARDS,
+      boards,
     };
   }
 }
