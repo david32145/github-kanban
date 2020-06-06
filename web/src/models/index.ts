@@ -35,4 +35,6 @@ export interface Repository {
   owner: string;
   user_id: number;
   description?: string;
+  completed_cards: number;
+  total_cards: number;
 }

@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface ContainerProps {
+  completedPercentage: string;
+}
+
+export const Container = styled.div<ContainerProps>`
   display: flex;
   flex: 1;
   height: 100%;
@@ -18,7 +22,7 @@ export const Container = styled.div`
       left: 0;
 
       height: 10px;
-      width: 75%;
+      width: ${(props) => props.completedPercentage}%;
       background: #50d8d7;
       border-radius: 5px;
     }

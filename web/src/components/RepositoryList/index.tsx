@@ -32,7 +32,10 @@ const RepositoryList: React.FC<RepositoryProps> = ({ repositories }) => {
               <span className="repo-description">{repository.description}</span>
             </td>
             <td className="td-tasks">
-              <ProgressTask />
+              <ProgressTask
+                completed_cards={repository.completed_cards}
+                total_cards={repository.total_cards}
+              />
             </td>
             <td className="td-action">
               <div className="actions">

@@ -75,9 +75,8 @@ class RepositoryController {
               SELECT count(*) FROM cards JOIN boards on
                 cards.board_id = boards.id
                 WHERE boards.repository_id = Repository.repository_id
-                AND cards.closedAt = NULL
           )`),
-            'uncompleted_cards'
+            'total_cards'
           ]
         ]
       }

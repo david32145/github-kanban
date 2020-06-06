@@ -4,21 +4,38 @@ import { Container } from "./styles";
 
 interface ProgressTaskProps {
   completed_cards: number;
-  uncompleted_cards: number;
+  total_cards: number;
+}
+
+function calculatePercentage(
+  completed_cards: number,
+  total_cards: number
+): string {
+  if (total_cards === 0) {
+    return "100";
+  }
+  return Number(completed_cards / total_cards).toFixed(0) || "0";
 }
 
 const ProgressTask: React.FC<ProgressTaskProps> = ({
   completed_cards,
-  uncompleted_cards,
+  total_cards,
 }) => {
   return (
-    <Container>
+    <Container
+      completedPercentage={calculatePercentage(total_cards, completed_cards)}
+    >
       <div className="progress-bar">
         <div className="progress" />
-        <span className="percentage-text">75%</span>
+        <span className="percentage-text">
+          {total_cards > 0
+            ? calculatePercentage(total_cards, completed_cards)
+            : 100}
+          %
+        </span>
         <span className="tasks-completed">
-          <span style={{ color: "#50D8D7" }}>3</span>
-          <span> / 4</span>
+          <span style={{ color: "#50D8D7" }}>{completed_cards}</span>
+          <span>{` / ${total_cards}`}</span>
         </span>
       </div>
     </Container>
