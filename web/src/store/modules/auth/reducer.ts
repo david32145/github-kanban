@@ -1,18 +1,12 @@
+import { User } from "models";
+
 export enum AuthActionType {
   ASYNC_SING_IN = "@auth/async_sing_in",
   SUCCESS_SING_IN = "@auth/success_sing_in",
   FAILED_SING_IN = "@auth/failed_sing_in",
 }
 
-export interface User {
-  id: number;
-  username: string;
-  description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface AuthState {
+export interface State {
   user?: User;
   loading: boolean;
   error?: string;
@@ -24,19 +18,16 @@ export interface AuthAction {
   user?: User;
 }
 
-export interface SagaAction {
+export interface AuthSagaAction {
   type: AuthActionType;
   username: string;
 }
 
-const INITIAL_STATE: AuthState = {
+const INITIAL_STATE: State = {
   loading: false,
 };
 
-export function authReducer(
-  state = INITIAL_STATE,
-  action: AuthAction
-): AuthState {
+export function authReducer(state = INITIAL_STATE, action: AuthAction): State {
   switch (action.type) {
     case AuthActionType.ASYNC_SING_IN:
       return { loading: true };
@@ -50,7 +41,7 @@ export function authReducer(
 }
 
 class AuthService {
-  public singIn(username: string): SagaAction {
+  public singIn(username: string): AuthSagaAction {
     return {
       type: AuthActionType.ASYNC_SING_IN,
       username,

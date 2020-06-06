@@ -3,8 +3,6 @@ import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-import BoardProvider from "board";
-
 import { MdBookmark } from "react-icons/md";
 
 import BoardList from "components/BoardList";
@@ -22,9 +20,7 @@ const KanbanBoardPage: React.FC = () => {
         </span>
       </RepoTitle>
       <DndProvider backend={HTML5Backend}>
-        <BoardProvider>
-          <BoardList />
-        </BoardProvider>
+        <BoardList />
       </DndProvider>
     </Container>
   );

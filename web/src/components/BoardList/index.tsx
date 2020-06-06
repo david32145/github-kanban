@@ -1,14 +1,17 @@
 import React from "react";
-
-import { useBoards } from "board";
-
+import { useSelector } from "react-redux";
 import Card from "components/Card";
 import DropZone from "components/DropZone";
+
+import { RootState } from "store";
+import { Board as BoardModel } from "models";
 
 import { Boards, Board } from "./styles";
 
 const BoardList: React.FC = () => {
-  const boards = useBoards();
+  const boards = useSelector<RootState, BoardModel[]>(
+    (state) => state.board.boards
+  );
   return (
     <Boards>
       {boards.map((board, index) => (

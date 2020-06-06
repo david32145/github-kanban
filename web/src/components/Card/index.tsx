@@ -1,16 +1,13 @@
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-import { useMoveCard } from "board";
+import { Card as CardModel } from "models";
+
+import { useDispatch } from "react-redux";
+
+import { BoardService } from "store/modules/board";
 
 import { Container } from "./styles";
-
-interface CardModel {
-  title: string;
-  description: string;
-  issueId: number;
-  color: string;
-}
 
 interface CardProps {
   card: CardModel;
@@ -28,8 +25,7 @@ const Card: React.FC<CardProps> = ({ card, boardIndex, cardIndex }) => {
   const cardRef = useRef<HTMLDivElement>() as React.MutableRefObject<
     HTMLInputElement
   >;
-
-  const moveCard = useMoveCard();
+  const dispatch = useDispatch();
   const [{ isDragging }, dragRef] = useDrag({
     item: { type: "CARD", boardIndex, cardIndex },
     collect: (monitor) => ({
@@ -76,11 +72,13 @@ const Card: React.FC<CardProps> = ({ card, boardIndex, cardIndex }) => {
 
         item.cardIndex = cardIndex;
         item.boardIndex = boardIndex;
-        moveCard(
-          currentBoardIndex,
-          currentCartIndex,
-          targetBoardIndex,
-          targetCardIndex
+        dispatch(
+          BoardService.move({
+            fromBoard: currentBoardIndex,
+            fromCard: currentCartIndex,
+            toBoard: targetBoardIndex,
+            toCard: targetBoardIndex,
+          })
         );
       }
     },

@@ -1,6 +1,9 @@
 import React from "react";
 import { useDrop } from "react-dnd";
-import { useMoveCard } from "board";
+
+import { useDispatch } from "react-redux";
+
+import { BoardService } from "store/modules/board";
 
 import { Container } from "./styles";
 
@@ -16,7 +19,7 @@ interface DragObject {
 }
 
 const DropZone: React.FC<DropZoneProps> = ({ boardIndex, show }) => {
-  const moveCard = useMoveCard();
+  const dispatch = useDispatch();
   const [, dropRef] = (useDrop<DragObject, any, any>({
     accept: ["CARD"],
     hover: (item) => {
@@ -24,7 +27,15 @@ const DropZone: React.FC<DropZoneProps> = ({ boardIndex, show }) => {
       const currentCardIndex = item.cardIndex;
       item.boardIndex = boardIndex;
       item.cardIndex = 0;
-      moveCard(currentBoardIndex, currentCardIndex, boardIndex, 0, true);
+      dispatch(
+        BoardService.move({
+          fromBoard: currentBoardIndex,
+          fromCard: currentCardIndex,
+          toBoard: boardIndex,
+          toCard: 0,
+          toBoardIsEmpty: true,
+        })
+      );
     },
   }) as unknown) as [any, React.MutableRefObject<HTMLInputElement>];
   return (

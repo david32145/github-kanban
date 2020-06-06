@@ -1,21 +1,22 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-
-import { useIsLogged } from "auth";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { AuthState } from "store/modules/auth";
 
 import { Container, LinkButton } from "./styles";
 
 const HeaderComponent: React.FC = () => {
-  const logged = useIsLogged();
   const location = useLocation();
+  const auth = useSelector<RootState, AuthState>((state) => state.auth);
   return (
     <Container>
-      {logged && (
+      {!auth.user ?? (
         <LinkButton to="/login" pathname={location.pathname}>
           login
         </LinkButton>
       )}
-      {!logged && (
+      {auth.user ?? (
         <>
           <LinkButton to="/repos" pathname={location.pathname}>
             Repositories

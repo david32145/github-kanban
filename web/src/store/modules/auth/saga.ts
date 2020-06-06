@@ -1,8 +1,8 @@
 import { all, takeLatest, put } from "redux-saga/effects";
 
-import { SagaAction, AuthActionType, AuthAction } from "../reducers/auth";
+import { AuthSagaAction, AuthActionType, AuthAction } from "./reducer";
 
-function* singIn(action: SagaAction) {
+function* singIn(action: AuthSagaAction) {
   console.log(action.username);
   yield put<AuthAction>({
     type: AuthActionType.FAILED_SING_IN,
