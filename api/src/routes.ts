@@ -12,6 +12,7 @@ routes
 
 routes
   .get('/repositories', RepositoryController.index)
+  .get('/repositories/:repository_id', RepositoryController.show)
   .post('/repositories', RepositoryController.store)
 
 routes

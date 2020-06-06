@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/bin/node /usr/share/yarn/bin/yarn.js add .
+  /usr/bin/node /usr/share/yarn/bin/yarn.js add @types/sequelize-typescript
 
 PATH: 
-  /home/david/.zplugin/polaris/bin:/home/david/.yarn/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/david/Android/Sdk/emulator:/home/david/Android/Sdk/tools:/home/david/Android/Sdk/tools/bin:/home/david/Android/Sdk/platform-tools:/usr/bin/flutter/bin
+  /root/.deno/bin:/home/david/.yarn/bin:/root/.deno/bin:/home/david/.zplugin/polaris/bin:/home/david/.yarn/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/david/Android/Sdk/emulator:/home/david/Android/Sdk/tools:/home/david/Android/Sdk/tools/bin:/home/david/Android/Sdk/platform-tools:/usr/bin/flutter/bin:/home/david/Android/Sdk/emulator:/home/david/Android/Sdk/tools:/home/david/Android/Sdk/tools/bin:/home/david/Android/Sdk/platform-tools:/usr/bin/flutter/bin
 
 Yarn version: 
   1.21.1
@@ -14,15 +14,15 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.npmjs.org/: Request "https://registry.npmjs.org/" returned a 403
-      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:66956:18)
+  Error: https://registry.npmjs.org/@types%2fsequelize-typescript: Not found
+      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:66947:18)
       at Request.self.callback (/usr/share/yarn/lib/cli.js:140665:22)
       at Request.emit (events.js:310:20)
       at Request.<anonymous> (/usr/share/yarn/lib/cli.js:141637:10)
       at Request.emit (events.js:310:20)
-      at Gunzip.<anonymous> (/usr/share/yarn/lib/cli.js:141559:12)
+      at IncomingMessage.<anonymous> (/usr/share/yarn/lib/cli.js:141559:12)
       at Object.onceWrapper (events.js:416:28)
-      at Gunzip.emit (events.js:322:22)
+      at IncomingMessage.emit (events.js:322:22)
       at endReadableNT (_stream_readable.js:1187:12)
       at processTicksAndRejections (internal/process/task_queues.js:84:21)
 

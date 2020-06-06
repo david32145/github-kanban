@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import RepoName from "components/RepoName";
 import ProgressTask from "components/ProgressTask";
@@ -39,7 +40,7 @@ const RepositoryList: React.FC<RepositoryProps> = ({ repositories }) => {
             </td>
             <td className="td-action">
               <div className="actions">
-                <a href="htttps://www.google.com.br">OPEN</a>
+                <Link to={`${repository.repository_id}/boards`}>OPEN</Link>
               </div>
             </td>
           </tr>

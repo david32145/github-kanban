@@ -57,6 +57,17 @@ class RepositoryController {
     }
   }
 
+  public async show (req: Request, res: Response): Promise<Response> {
+    const repository_id = String(req.params.repository_id)
+    const repository = await Repository.findByPk(repository_id, {
+      include: [{
+        association: 'boards',
+        include: ['cards']
+      }]
+    })
+    return res.status(200).json(repository)
+  }
+
   public async index (req: Request, res: Response): Promise<Response> {
     const repositories = await Repository.findAll({
       attributes: {
