@@ -40,7 +40,9 @@ const RepositoryList: React.FC<RepositoryProps> = ({ repositories }) => {
             </td>
             <td className="td-action">
               <div className="actions">
-                <Link to={`${repository.repository_id}/boards`}>OPEN</Link>
+                <Link to={`/repository/${repository.repository_id}/boards`}>
+                  OPEN
+                </Link>
               </div>
             </td>
           </tr>

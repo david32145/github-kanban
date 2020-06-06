@@ -3,12 +3,15 @@ import { useSelector } from "react-redux";
 import Card from "components/Card";
 import DropZone from "components/DropZone";
 
+import { MdAdd } from "react-icons/md";
+
 import { RootState } from "store";
 import { Board as BoardModel } from "models";
 
+import { Link } from "react-router-dom";
 import { Boards, Board } from "./styles";
 
-const BoardList: React.FC = () => {
+const BoardList: React.FC<{ repository_id?: number }> = ({ repository_id }) => {
   const boards = useSelector<RootState, BoardModel[]>(
     (state) => state.board.boards
   );
@@ -25,7 +28,14 @@ const BoardList: React.FC = () => {
     <Boards>
       {boards.map((board, index) => (
         <Board key={board.id}>
-          <h2>{getTitleFromType(board.type)}</h2>
+          <header>
+            <h2>{getTitleFromType(board.type)}</h2>
+            {board.type === "TODO" && (
+              <Link to={`/repository/${repository_id}/cards/new`}>
+                <MdAdd color="#FFF" size={24} />
+              </Link>
+            )}
+          </header>
           {board.cards.map((card, cardIndex) => (
             <Card
               key={card.issueId}

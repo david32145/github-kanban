@@ -43,11 +43,15 @@ const Routes: React.FC = () => {
             <Route path="/repo/new" exact component={RepoNewPage} />
             <Route path="/repos" exact component={RepoListPage} />
             <Route
-              path="/:repository_id/boards"
+              path="/repository/:repository_id/boards"
               exact
               component={KanbanBoardPage}
             />
-            <Route path="/board/card/new" exact component={NewCardPage} />
+            <Route
+              path="/repository/:repository_id/cards/new"
+              exact
+              component={NewCardPage}
+            />
             <Route path="*">
               <Redirect to="/repos" />
             </Route>

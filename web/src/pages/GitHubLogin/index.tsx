@@ -30,6 +30,7 @@ const GitHubLoginPage: React.FC = () => {
         <InputText
           containerClassName="input-wrapper"
           label="GitHub"
+          placeholder="your github username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />

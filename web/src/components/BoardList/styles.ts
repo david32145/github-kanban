@@ -21,13 +21,29 @@ export const Board = styled.div`
   max-height: calc(100%);
   overflow-y: scroll;
 
-  h2 {
+  header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     margin: 0 0 30px 0;
-    padding: 0;
-    font-family: Roboto;
-    font-weight: bold;
-    font-size: 24px;
+    h2 {
+      padding: 0;
+      font-family: Roboto;
+      font-weight: bold;
+      font-size: 24px;
 
-    color: #4d4d4d;
+      color: #4d4d4d;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background-color: #0077b6;
+    }
   }
 `;

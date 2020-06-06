@@ -19,9 +19,12 @@ const NewCardPage: React.FC = () => {
       </RepoTitle>
       <FormContainer>
         <h2>Add new card</h2>
-        <InputText label="Title" />
-        <InputText label="Description" />
-        <InputText label="GitHub Description" />
+        <InputText label="Title" placeholder="My title" />
+        <InputText label="Description" placeholder="My description" />
+        <InputText
+          label="GitHub Description"
+          placeholder="My github description"
+        />
 
         <Button className="add-button">Add</Button>
       </FormContainer>

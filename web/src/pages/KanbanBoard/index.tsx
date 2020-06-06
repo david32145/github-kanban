@@ -46,7 +46,7 @@ const KanbanBoardPage: React.FC = () => {
         </span>
       </RepoTitle>
       <DndProvider backend={HTML5Backend}>
-        <BoardList />
+        <BoardList repository_id={repository?.repository_id} />
       </DndProvider>
     </Container>
   );

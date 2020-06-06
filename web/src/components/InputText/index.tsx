@@ -20,12 +20,7 @@ const InputText: React.FC<InputTextProps> = ({
   return (
     <Container className={containerClassName}>
       <label htmlFor="repo">{label}</label>
-      <input
-        id="repo"
-        type="text"
-        placeholder="Search in your repository"
-        {...rest}
-      />
+      <input id="repo" type="text" {...rest} />
       <span />
     </Container>
   );
