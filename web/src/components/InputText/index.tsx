@@ -9,11 +9,16 @@ type HTMLInputElementProps = React.DetailedHTMLProps<
 
 interface InputTextProps extends HTMLInputElementProps {
   label: string;
+  containerClassName?: string;
 }
 
-const InputText: React.FC<InputTextProps> = ({ label, ...rest }) => {
+const InputText: React.FC<InputTextProps> = ({
+  label,
+  containerClassName,
+  ...rest
+}) => {
   return (
-    <Container>
+    <Container className={containerClassName}>
       <label htmlFor="repo">{label}</label>
       <input
         id="repo"

@@ -1,6 +1,7 @@
 import React from "react";
 
 import Button from "components/Button";
+import InputText from "components/InputText";
 
 import GitHubLogo from "assets/github-logo.png";
 
@@ -23,6 +24,7 @@ const GitHubLoginPage: React.FC = () => {
             <h5>You must be logged.</h5>
           </div>
         </div>
+        <InputText containerClassName="input-wrapper" label="GitHub" />
         <Button onClick={handleSingIn} className="sing-in-button">
           Sing In
         </Button>

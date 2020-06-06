@@ -1,9 +1,9 @@
-import { GitHubUser } from "auth/context";
+import { User } from "models";
 
 class LoginService {
   private BASE_URL = "@githubKanban";
 
-  public login(user: GitHubUser): void {
+  public login(user: User): void {
     localStorage.setItem(`${this.BASE_URL}/user`, JSON.stringify(user));
   }
 
@@ -11,9 +11,9 @@ class LoginService {
     localStorage.removeItem(`${this.BASE_URL}/user`);
   }
 
-  public getUser(): GitHubUser {
+  public getUser(): User {
     const userAsJson = localStorage.getItem(`${this.BASE_URL}/user`);
-    return (userAsJson as unknown) as GitHubUser;
+    return (userAsJson as unknown) as User;
   }
 
   public isLogged(): boolean {

@@ -11,12 +11,7 @@ const HeaderComponent: React.FC = () => {
   const auth = useSelector<RootState, AuthState>((state) => state.auth);
   return (
     <Container>
-      {!auth.user ?? (
-        <LinkButton to="/login" pathname={location.pathname}>
-          login
-        </LinkButton>
-      )}
-      {auth.user ?? (
+      {auth.user ? (
         <>
           <LinkButton to="/repos" pathname={location.pathname}>
             Repositories
@@ -35,6 +30,10 @@ const HeaderComponent: React.FC = () => {
             Logout
           </LinkButton>
         </>
+      ) : (
+        <LinkButton to="/login" pathname={location.pathname}>
+          login
+        </LinkButton>
       )}
     </Container>
   );

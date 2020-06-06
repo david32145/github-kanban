@@ -77,7 +77,7 @@ const Card: React.FC<CardProps> = ({ card, boardIndex, cardIndex }) => {
             fromBoard: currentBoardIndex,
             fromCard: currentCartIndex,
             toBoard: targetBoardIndex,
-            toCard: targetBoardIndex,
+            toCard: targetCardIndex,
           })
         );
       }
