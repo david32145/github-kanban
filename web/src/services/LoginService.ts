@@ -12,12 +12,14 @@ class LoginService {
   }
 
   public getUser(): User {
-    const userAsJson = localStorage.getItem(`${this.BASE_URL}/user`);
+    const userAsJson = JSON.parse(
+      localStorage.getItem(`${this.BASE_URL}/user`) || "{}"
+    );
     return (userAsJson as unknown) as User;
   }
 
   public isLogged(): boolean {
-    return localStorage.getItem(`${this.BASE_URL}/user`) !== undefined;
+    return localStorage.getItem(`${this.BASE_URL}/user`) != null;
   }
 }
 

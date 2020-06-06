@@ -59,7 +59,8 @@ module.exports = {
     "@typescript-eslint/no-unused-expressions": 2,
     "class-methods-use-this": "off",
     "no-param-reassign": "off",
-    "import/no-named-as-default": "off"
+    "import/no-named-as-default": "off",
+    "camelcase": "off"
   },
   settings: {
     "import/parsers": {

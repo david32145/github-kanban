@@ -3,9 +3,15 @@ import React from "react";
 import RepoName from "components/RepoName";
 import ProgressTask from "components/ProgressTask";
 
+import { Repository } from "models";
+
 import { Container } from "./styles";
 
-const RepositoryList: React.FC = () => {
+interface RepositoryProps {
+  repositories: Repository[];
+}
+
+const RepositoryList: React.FC<RepositoryProps> = ({ repositories }) => {
   return (
     <Container>
       <thead>
@@ -17,15 +23,13 @@ const RepositoryList: React.FC = () => {
         </tr>
       </thead>
       <tbody>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => (
-          <tr key={v}>
+        {repositories.map((repository) => (
+          <tr key={repository.repository_id}>
             <td className="td-name">
-              <RepoName />
+              <RepoName owner={repository.owner} name={repository.name} />
             </td>
             <td className="td-description">
-              <span className="repo-description">
-                A framework for building native apps with React.
-              </span>
+              <span className="repo-description">{repository.description}</span>
             </td>
             <td className="td-tasks">
               <ProgressTask />

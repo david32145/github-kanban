@@ -27,3 +27,12 @@ export interface Board {
   creatable: boolean;
   cards: Card[];
 }
+
+export interface Repository {
+  repository_id: number;
+  repository_url: string;
+  name: string;
+  owner: string;
+  user_id: number;
+  description?: string;
+}

@@ -6,6 +6,7 @@ import Board from 'database/Board'
 import Repository from 'database/Repository'
 import { extractAPIError } from 'utils/apiError'
 import { getDefauldBoards } from 'utils/boardUtils'
+import Sequelize from 'sequelize'
 
 interface RepositoryCreateBody {
   repo_name: string
@@ -57,7 +58,30 @@ class RepositoryController {
   }
 
   public async index (req: Request, res: Response): Promise<Response> {
-    const repositories = await Repository.findAll()
+    const repositories = await Repository.findAll({
+      attributes: {
+        include: [
+          [
+            Sequelize.literal(`(
+              SELECT count(*) FROM cards JOIN boards on
+                cards.board_id = boards.id
+                WHERE boards.repository_id = Repository.repository_id
+                AND cards.closedAt != NULL
+          )`),
+            'completed_cards'
+          ],
+          [
+            Sequelize.literal(`(
+              SELECT count(*) FROM cards JOIN boards on
+                cards.board_id = boards.id
+                WHERE boards.repository_id = Repository.repository_id
+                AND cards.closedAt = NULL
+          )`),
+            'uncompleted_cards'
+          ]
+        ]
+      }
+    })
     return res.status(200).send(repositories)
   }
 }

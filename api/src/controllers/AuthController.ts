@@ -69,6 +69,27 @@ class AuthController {
     }
     return res.status(400).send('Algo deu errado')
   }
+
+  public async show (req: Request, res: Response): Promise<Response> {
+    const username = String(req.params.username)
+    const user: User = await User.findOne({
+      where: {
+        username
+      },
+      attributes: {
+        exclude: ['access_token']
+      }
+    })
+
+    if (user) {
+      return res.status(200).json(user)
+    }
+
+    return res.status(401).json({
+      error: 'USER_NOT_LOGGED',
+      message: 'user not logged'
+    })
+  }
 }
 
 export default new AuthController()

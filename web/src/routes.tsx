@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
@@ -22,8 +22,8 @@ const Routes: React.FC = () => {
   const dispatch = useDispatch();
   const auth = useSelector<RootState, AuthState>((state) => state.auth);
   useEffect(() => {
-    const user = LoginService.getUser();
-    if (user) {
+    if (LoginService.isLogged()) {
+      const user = LoginService.getUser();
       dispatch(AuthService.setUser(user));
     }
   }, []);

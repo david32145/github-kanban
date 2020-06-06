@@ -2,7 +2,15 @@ import React from "react";
 
 import { Container } from "./styles";
 
-const ProgressTask: React.FC = () => {
+interface ProgressTaskProps {
+  completed_cards: number;
+  uncompleted_cards: number;
+}
+
+const ProgressTask: React.FC<ProgressTaskProps> = ({
+  completed_cards,
+  uncompleted_cards,
+}) => {
   return (
     <Container>
       <div className="progress-bar">

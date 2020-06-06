@@ -4,13 +4,18 @@ import { MdBookmark } from "react-icons/md";
 
 import { Container } from "./styles";
 
-const RepoName: React.FC = () => {
+interface RepoNameProps {
+  owner: string;
+  name: string;
+}
+
+const RepoName: React.FC<RepoNameProps> = ({ owner, name }) => {
   return (
     <Container>
       <MdBookmark size={20} color="#4C4C4C" />
       <span>
-        facebook
-        <span> / react-native</span>
+        {owner}
+        <span>{` / ${name}`}</span>
       </span>
     </Container>
   );
