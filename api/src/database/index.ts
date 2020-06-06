@@ -14,3 +14,4 @@ User.initScheme(sequelize)
 
 Board.associate(sequelize)
 Repository.associate(sequelize)
+Card.associate(sequelize)

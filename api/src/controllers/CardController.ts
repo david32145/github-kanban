@@ -24,6 +24,7 @@ interface GitHubIssueCreateResponse {
 class CardController {
   public async store (req: Request<RouteParams, {}, CardCreateRequest>, res: Response): Promise<Response> {
     const user_id = req.headers.authorization as string
+    console.log(user_id)
     const repository: Repository = await Repository.findOne({
       where: {
         repository_id: req.params.repository_id,

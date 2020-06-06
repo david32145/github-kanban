@@ -8,7 +8,7 @@ const api = axios.create({
 api.interceptors.request.use((request) => {
   if (LoginService.isLogged()) {
     const user = LoginService.getUser();
-    request.headers.authoriization = user.id;
+    request.headers.authorization = user.id;
   }
   return request;
 });

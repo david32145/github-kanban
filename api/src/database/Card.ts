@@ -46,11 +46,13 @@ class Card extends Model {
       }
     }, { sequelize, tableName: 'cards' })
   }
-}
 
-// Card.belongsTo(Board, {
-//   as: 'boards',
-//   foreignKey: 'board_id'
-// })
+  public static associate (sequelize: Sequelize) {
+    this.belongsTo(sequelize.model('Board'), {
+      as: 'boards',
+      foreignKey: 'board_id'
+    })
+  }
+}
 
 export default Card
