@@ -1,14 +1,20 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
-import { AuthState } from "store/modules/auth";
+import { AuthState, AuthService } from "store/modules/auth";
 
 import { Container, LinkButton } from "./styles";
 
 const HeaderComponent: React.FC = () => {
   const location = useLocation();
   const auth = useSelector<RootState, AuthState>((state) => state.auth);
+  const dispatch = useDispatch();
+  function handlerLogout(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    e.preventDefault();
+    dispatch(AuthService.logout());
+  }
+
   return (
     <Container>
       {auth.user ? (
@@ -25,6 +31,7 @@ const HeaderComponent: React.FC = () => {
           <LinkButton
             style={{ marginLeft: "auto", marginRight: 36 }}
             to="/logout"
+            onClick={handlerLogout}
             pathname={location.pathname}
           >
             Logout

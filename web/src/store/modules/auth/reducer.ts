@@ -1,9 +1,13 @@
 import { User } from "models";
+import LoginService from "services/LoginService";
 
 export enum AuthActionType {
   ASYNC_SING_IN = "@auth/async_sing_in",
   SUCCESS_SING_IN = "@auth/success_sing_in",
   FAILED_SING_IN = "@auth/failed_sing_in",
+
+  SET_USER = "@auth/set_user",
+  LOGOUT = "@auth/logout",
 }
 
 export interface State {
@@ -35,6 +39,10 @@ export function authReducer(state = INITIAL_STATE, action: AuthAction): State {
       return { loading: false, error: action.error };
     case AuthActionType.SUCCESS_SING_IN:
       return { loading: false, user: action.user };
+    case AuthActionType.SET_USER:
+      return { loading: false, user: action.user };
+    case AuthActionType.LOGOUT:
+      return INITIAL_STATE;
     default:
       return state;
   }
@@ -45,6 +53,20 @@ class AuthService {
     return {
       type: AuthActionType.ASYNC_SING_IN,
       username,
+    };
+  }
+
+  public setUser(user: User): AuthAction {
+    return {
+      type: AuthActionType.SET_USER,
+      user,
+    };
+  }
+
+  public logout(): AuthAction {
+    LoginService.logout();
+    return {
+      type: AuthActionType.LOGOUT,
     };
   }
 }

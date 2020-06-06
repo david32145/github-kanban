@@ -1,6 +1,6 @@
-import React from "react";
-
-import { Router, Route, Switch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 import { createBrowserHistory } from "history";
 
@@ -12,22 +12,46 @@ import NewCardPage from "pages/NewCard";
 import KanbanBoardPage from "pages/KanbanBoard";
 
 import HeaderComponent from "components/Header";
+import LoginService from "services/LoginService";
+import { AuthService, AuthState } from "store/modules/auth";
+import { RootState } from "store";
 
 export const history = createBrowserHistory();
 
-const routes: React.FC = () => {
+const Routes: React.FC = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector<RootState, AuthState>((state) => state.auth);
+  useEffect(() => {
+    const user = LoginService.getUser();
+    if (user) {
+      dispatch(AuthService.setUser(user));
+    }
+  }, []);
   return (
     <Router history={history}>
       <HeaderComponent />
       <Switch>
-        <Route path="/login" exact component={GitHubLoginPage} />
-        <Route path="/repo/new" exact component={RepoNewPage} />
-        <Route path="/repos" exact component={RepoListPage} />
-        <Route path="/board" exact component={KanbanBoardPage} />
-        <Route path="/board/card/new" exact component={NewCardPage} />
+        {!auth.user ? (
+          <>
+            <Route path="/login" exact component={GitHubLoginPage} />
+            <Route path="*">
+              <Redirect to="/login" />
+            </Route>
+          </>
+        ) : (
+          <>
+            <Route path="/repo/new" exact component={RepoNewPage} />
+            <Route path="/repos" exact component={RepoListPage} />
+            <Route path="/board" exact component={KanbanBoardPage} />
+            <Route path="/board/card/new" exact component={NewCardPage} />
+            <Route path="*">
+              <Redirect to="/repos" />
+            </Route>
+          </>
+        )}
       </Switch>
     </Router>
   );
 };
 
-export default routes;
+export default Routes;
