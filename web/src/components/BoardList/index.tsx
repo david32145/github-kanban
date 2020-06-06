@@ -38,7 +38,8 @@ const BoardList: React.FC<{ repository_id?: number }> = ({ repository_id }) => {
           </header>
           {board.cards.map((card, cardIndex) => (
             <Card
-              key={card.issueId}
+              color={board.color}
+              key={card.issue_id}
               card={card}
               boardIndex={index}
               cardIndex={cardIndex}

@@ -2,7 +2,8 @@ import { all, takeLatest, put, call } from "redux-saga/effects";
 import { AxiosResponse } from "axios";
 import APIRestService from "services/APIRestService";
 import { User } from "models";
-import { history } from "routes";
+import { history } from "historyFactory";
+
 import LoginService from "services/LoginService";
 import { AuthSagaAction, AuthActionType, AuthAction } from "./reducer";
 

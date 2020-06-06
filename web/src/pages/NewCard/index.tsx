@@ -7,6 +7,7 @@ import Button from "components/Button";
 
 import APIRestService from "services/APIRestService";
 import { useParams } from "react-router-dom";
+import { history } from "historyFactory";
 import { Container, RepoTitle, FormContainer } from "./styles";
 
 interface RouteParam {
@@ -24,6 +25,7 @@ const NewCardPage: React.FC = () => {
       description,
       github_description: gitHubDescription,
     });
+    history.push(`/repository/${params.repository_id}/boards`);
   }
 
   return (

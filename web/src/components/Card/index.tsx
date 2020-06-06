@@ -13,6 +13,7 @@ interface CardProps {
   card: CardModel;
   boardIndex: number;
   cardIndex: number;
+  color: string;
 }
 
 interface DragObject {
@@ -21,7 +22,7 @@ interface DragObject {
   cardIndex: number;
 }
 
-const Card: React.FC<CardProps> = ({ card, boardIndex, cardIndex }) => {
+const Card: React.FC<CardProps> = ({ card, boardIndex, cardIndex, color }) => {
   const cardRef = useRef<HTMLDivElement>() as React.MutableRefObject<
     HTMLInputElement
   >;
@@ -86,10 +87,10 @@ const Card: React.FC<CardProps> = ({ card, boardIndex, cardIndex }) => {
 
   dropRef(dragRef(cardRef));
   return (
-    <Container isDragging={isDragging} ref={cardRef} color={card.color}>
+    <Container isDragging={isDragging} ref={cardRef} color={color}>
       <div className="header">
         <h1>{card.title}</h1>
-        <span>{`#${card.issueId}`}</span>
+        <span>{`#${card.number}`}</span>
       </div>
       <p>{card.description}</p>
     </Container>

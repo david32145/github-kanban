@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
-
-import { createBrowserHistory } from "history";
+import { useDispatch } from "react-redux";
+import { Router, Route, Switch, Redirect, RouteProps } from "react-router-dom";
 
 import GitHubLoginPage from "pages/GitHubLogin";
 import RepoNewPage from "pages/Repo/New";
@@ -13,14 +11,33 @@ import KanbanBoardPage from "pages/KanbanBoard";
 
 import HeaderComponent from "components/Header";
 import LoginService from "services/LoginService";
-import { AuthService, AuthState } from "store/modules/auth";
-import { RootState } from "store";
+import { AuthService } from "store/modules/auth";
+import { history } from "./historyFactory";
 
-export const history = createBrowserHistory();
+interface PrivateRouteProps extends RouteProps {
+  component: React.FC;
+}
 
+const PrivateRoute: React.FC<PrivateRouteProps> = ({
+  component: Component,
+  ...rest
+}) => {
+  if (!LoginService.isLogged()) {
+    return (
+      <Route {...rest}>
+        <Redirect to="/login" />
+      </Route>
+    );
+  }
+
+  return (
+    <Route {...rest}>
+      <Component />
+    </Route>
+  );
+};
 const Routes: React.FC = () => {
   const dispatch = useDispatch();
-  const auth = useSelector<RootState, AuthState>((state) => state.auth);
   useEffect(() => {
     if (LoginService.isLogged()) {
       const user = LoginService.getUser();
@@ -31,32 +48,22 @@ const Routes: React.FC = () => {
     <Router history={history}>
       <HeaderComponent />
       <Switch>
-        {!auth.user ? (
-          <>
-            <Route path="/login" exact component={GitHubLoginPage} />
-            <Route path="*">
-              <Redirect to="/login" />
-            </Route>
-          </>
-        ) : (
-          <>
-            <Route path="/repo/new" exact component={RepoNewPage} />
-            <Route path="/repos" exact component={RepoListPage} />
-            <Route
-              path="/repository/:repository_id/boards"
-              exact
-              component={KanbanBoardPage}
-            />
-            <Route
-              path="/repository/:repository_id/cards/new"
-              exact
-              component={NewCardPage}
-            />
-            <Route path="*">
-              <Redirect to="/repos" />
-            </Route>
-          </>
-        )}
+        <Route path="/login" exact component={GitHubLoginPage} />
+        <PrivateRoute path="/repo/new" exact component={RepoNewPage} />
+        <PrivateRoute path="/repos" exact component={RepoListPage} />
+        <PrivateRoute
+          path="/repository/:repository_id/boards"
+          exact
+          component={KanbanBoardPage}
+        />
+        <PrivateRoute
+          path="/repository/:repository_id/cards/new"
+          exact
+          component={NewCardPage}
+        />
+        <Route path="*">
+          <Redirect to="/repos" />
+        </Route>
       </Switch>
     </Router>
   );

@@ -16,16 +16,22 @@ export interface MoveCardOptions {
 }
 
 export interface Card {
+  issue_id: number;
+  issue_url: string;
   title: string;
   description: string;
-  issueId: number;
-  color: string;
+  number: string;
+  order: number;
+  board_id: number;
+  createdAt: string;
+  updateAt: string;
+  closedAt: string;
 }
 
 export interface Board {
   id: number;
   type: string;
-  creatable: boolean;
+  color: string;
   cards: Card[];
 }
 
