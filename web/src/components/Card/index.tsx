@@ -113,7 +113,9 @@ const Card: React.FC<CardProps> = ({
     <Container isDragging={isDragging} ref={cardRef} color={color}>
       <div className="header">
         <h1>{card.title}</h1>
-        <span>{`#${card.number}`}</span>
+        <a href={card.issue_url} rel="noreferrer" target="_blank">
+          {`#${card.number}`}
+        </a>
       </div>
       <p>{card.description}</p>
     </Container>

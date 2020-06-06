@@ -30,12 +30,12 @@ export const Container = styled.div<ContainerProps>`
       color: #4d4d4d;
     }
 
-    span {
+    a {
+      text-decoration: none;
+      color: #c4c4c4;
       font-family: Roboto;
       font-weight: 300;
       font-size: 12px;
-
-      color: #c4c4c4;
     }
   }
 

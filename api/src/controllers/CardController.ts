@@ -4,6 +4,7 @@ import User from 'database/User'
 import GitHubAPI from 'services/githubApi'
 import Board from 'database/Board'
 import Card from 'database/Card'
+import CardRepository from 'database/repository/CardRepository'
 import { Op } from 'sequelize'
 
 interface CardCreateRequest {
@@ -76,84 +77,37 @@ class CardController {
   public async moveCard (req: Request, res: Response): Promise<Response> {
     const user_id = String(req.headers.authorization)
     const repository_id = String(req.params.repository_id)
-    type X = {[key: string]: string}
+    type X = {[key: string]: number}
     const { card_id, to_board_id, to_card_id }: X = req.body
-    const toBoardCount = await Card.count({
-      where: {
-        board_id: to_board_id
-      }
-    })
+    const toBoardCount = await CardRepository.countCardByBoard(to_board_id)
     const card: Card = await Card.findByPk(card_id)
     const oldBoardId = card.board_id
     const oldOrder = card.order
-    if (card.board_id === Number(to_board_id)) {
+    if (card.board_id === to_board_id) {
       const toCard: Card = await Card.findByPk(to_card_id)
       if (card.order < toCard.order) {
-        await Card.increment({
-          order: -1
-        }, {
-          where: {
-            board_id: oldBoardId,
-            order: {
-              [Op.gt]: oldOrder,
-              [Op.lte]: toCard.order
-            }
-          }
-        })
+        await CardRepository.shiftLeft(to_board_id, oldOrder, toCard.order)
       } else {
-        await Card.increment({
-          order: 1
-        }, {
-          where: {
-            board_id: oldBoardId,
-            order: {
-              [Op.lt]: oldOrder,
-              [Op.gte]: toCard.order
-            }
-          }
-        })
+        await CardRepository.shiftRight(to_board_id, oldOrder, toCard.order)
       }
       card.order = toCard.order
       await card.save()
     } else {
       if (toBoardCount === 0) {
-        card.board_id = Number(to_board_id)
+        card.board_id = to_board_id
         card.order = 1
         await card.save()
       } else {
         const toCard: Card = await Card.findByPk(to_card_id)
-        await Card.increment({
-          order: 1
-        }, {
-          where: {
-            board_id: to_board_id,
-            order: {
-              [Op.gte]: toCard.order
-            }
-          }
-        })
+        await CardRepository.shiftRightEnd(to_board_id, toCard.order)
+
         card.order = toCard.order
-        card.board_id = Number(to_board_id)
+        card.board_id = to_board_id
         await card.save()
       }
-      await Card.increment({
-        order: -1
-      }, {
-        where: {
-          board_id: oldBoardId,
-          order: {
-            [Op.gt]: oldOrder
-          }
-        }
-      })
+      await CardRepository.shiftLeftEnd(oldBoardId, oldOrder)
     }
-    return res.status(200).json({
-      card_id,
-      to_board_id,
-      to_card_id,
-      user_id,
-      repository_id
-    })
+    return res.status(200).json()
   }
 }
 export default new CardController()
