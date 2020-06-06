@@ -1,6 +1,8 @@
 import React from "react";
 
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
+
+import { createBrowserHistory } from "history";
 
 import GitHubLoginPage from "pages/GitHubLogin";
 import RepoNewPage from "pages/Repo/New";
@@ -11,9 +13,11 @@ import KanbanBoardPage from "pages/KanbanBoard";
 
 import HeaderComponent from "components/Header";
 
+export const history = createBrowserHistory();
+
 const routes: React.FC = () => {
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <HeaderComponent />
       <Switch>
         <Route path="/login" exact component={GitHubLoginPage} />
@@ -22,7 +26,7 @@ const routes: React.FC = () => {
         <Route path="/board" exact component={KanbanBoardPage} />
         <Route path="/board/card/new" exact component={NewCardPage} />
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 };
 
