@@ -23,13 +23,13 @@ const ProgressTask: React.FC<ProgressTaskProps> = ({
 }) => {
   return (
     <Container
-      completedPercentage={calculatePercentage(total_cards, completed_cards)}
+      completedPercentage={calculatePercentage(completed_cards, total_cards)}
     >
       <div className="progress-bar">
         <div className="progress" />
         <span className="percentage-text">
           {total_cards > 0
-            ? calculatePercentage(total_cards, completed_cards)
+            ? calculatePercentage(completed_cards, total_cards)
             : 100}
           %
         </span>

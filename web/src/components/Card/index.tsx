@@ -14,21 +14,38 @@ interface CardProps {
   boardIndex: number;
   cardIndex: number;
   color: string;
+  boardId: number;
+  repository_id: number;
 }
 
 interface DragObject {
   type: string;
   boardIndex: number;
   cardIndex: number;
+  boardId: number;
+  cardId: number;
 }
 
-const Card: React.FC<CardProps> = ({ card, boardIndex, cardIndex, color }) => {
+const Card: React.FC<CardProps> = ({
+  card,
+  boardIndex,
+  cardIndex,
+  color,
+  boardId,
+  repository_id,
+}) => {
   const cardRef = useRef<HTMLDivElement>() as React.MutableRefObject<
     HTMLInputElement
   >;
   const dispatch = useDispatch();
   const [{ isDragging }, dragRef] = useDrag({
-    item: { type: "CARD", boardIndex, cardIndex },
+    item: {
+      type: "CARD",
+      boardIndex,
+      cardIndex,
+      boardId,
+      cardId: card.issue_id,
+    },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -74,12 +91,18 @@ const Card: React.FC<CardProps> = ({ card, boardIndex, cardIndex, color }) => {
         item.cardIndex = cardIndex;
         item.boardIndex = boardIndex;
         dispatch(
-          BoardService.move({
-            fromBoard: currentBoardIndex,
-            fromCard: currentCartIndex,
-            toBoard: targetBoardIndex,
-            toCard: targetCardIndex,
-          })
+          BoardService.move(
+            {
+              fromBoard: currentBoardIndex,
+              fromCard: currentCartIndex,
+              toBoard: targetBoardIndex,
+              toCard: targetCardIndex,
+              fromCardId: item.cardId,
+              toBoardId: boardId,
+              toCardId: card.issue_id,
+            },
+            repository_id
+          )
         );
       }
     },

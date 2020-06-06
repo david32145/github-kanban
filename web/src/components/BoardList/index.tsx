@@ -41,11 +41,18 @@ const BoardList: React.FC<{ repository_id?: number }> = ({ repository_id }) => {
               color={board.color}
               key={card.issue_id}
               card={card}
+              boardId={board.id}
               boardIndex={index}
               cardIndex={cardIndex}
+              repository_id={repository_id || 0}
             />
           ))}
-          <DropZone boardIndex={index} show={board.cards.length === 0} />
+          <DropZone
+            boardId={board.id}
+            boardIndex={index}
+            repository_id={repository_id || 0}
+            show={board.cards.length === 0}
+          />
         </Board>
       ))}
     </Boards>

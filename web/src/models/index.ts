@@ -12,6 +12,10 @@ export interface MoveCardOptions {
   toBoard: number;
   toCard: number;
 
+  fromCardId: number;
+  toBoardId: number;
+  toCardId: number;
+
   toBoardIsEmpty?: boolean;
 }
 

@@ -2,13 +2,9 @@ import producer from "immer";
 import { Board, MoveCardOptions } from "models";
 
 export enum ActionBoardTypes {
-  MOVE_LOCAL_BOARD = "@board/move_local_board",
+  MOVE_BOARD = "@board/move_board",
 
   SET_BOARDS = "@board/set_boards",
-
-  ASYNC_MOVE_SERVER_BOARD = "@board/async_move_server_board",
-  SUCCESS_MOVE_SERVER_BOARD = "@board/success_move_server_board",
-  FAILED_MOVE_SERVER_BOARD = "@board/failed_move_server_board",
 }
 
 export interface State {
@@ -21,11 +17,7 @@ export interface BoardAction {
   type: ActionBoardTypes;
   moveOptions?: MoveCardOptions;
   boards?: Board[];
-}
-
-export interface BoardSagaAction {
-  type: ActionBoardTypes;
-  error?: string;
+  repository_id?: number;
 }
 
 const INITIAL_STATE: State = {
@@ -55,7 +47,7 @@ export function boardReducer(
   action: BoardAction
 ): State {
   switch (action.type) {
-    case ActionBoardTypes.MOVE_LOCAL_BOARD:
+    case ActionBoardTypes.MOVE_BOARD:
       return moveLocalBoard(state, action);
     case ActionBoardTypes.SET_BOARDS:
       return { ...state, boards: action.boards || [] };
@@ -65,10 +57,11 @@ export function boardReducer(
 }
 
 class BoardService {
-  public move(options: MoveCardOptions): BoardAction {
+  public move(options: MoveCardOptions, repository_id: number): BoardAction {
     return {
-      type: ActionBoardTypes.MOVE_LOCAL_BOARD,
+      type: ActionBoardTypes.MOVE_BOARD,
       moveOptions: options,
+      repository_id,
     };
   }
 
