@@ -4,6 +4,7 @@ import User from 'database/User'
 import GitHubAPI from 'services/githubApi'
 import Board from 'database/Board'
 import Card from 'database/Card'
+import { Op } from 'sequelize'
 
 interface CardCreateRequest {
   title: string
@@ -69,6 +70,44 @@ class CardController {
     return res.status(404).send({
       error: 'REPOSITORY_NOT_FOUND',
       message: `the repository with id = ${req.params.repository_id} doesn't exists`
+    })
+  }
+
+  public async moveCard (req: Request, res: Response): Promise<Response> {
+    const user_id = String(req.headers.authorization)
+    const repository_id = String(req.params.repository_id)
+    type X = {[key: string]: string}
+    const { card_id, to_board_id, to_card_id }: X = req.body
+    const toBoardCount = await Card.count({
+      where: {
+        board_id: to_board_id
+      }
+    })
+    const card: Card = await Card.findByPk(card_id)
+    const oldBoardId = card.board_id
+    const oldOrder = card.order
+    console.log(toBoardCount)
+    if (toBoardCount === 0) {
+      card.board_id = Number(to_board_id)
+      card.order = 1
+      await card.save()
+    }
+    await Card.increment({
+      order: -1
+    }, {
+      where: {
+        board_id: oldBoardId,
+        order: {
+          [Op.gt]: oldOrder
+        }
+      }
+    })
+    return res.status(200).json({
+      card_id,
+      to_board_id,
+      to_card_id,
+      user_id,
+      repository_id
     })
   }
 }

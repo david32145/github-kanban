@@ -17,5 +17,6 @@ routes
 
 routes
   .post('/repositories/:repository_id/card', CardController.store)
+  .put('/repositories/:repository_id/card/move', CardController.moveCard)
 
 export default routes

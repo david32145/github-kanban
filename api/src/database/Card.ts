@@ -1,16 +1,16 @@
 import { Model, DataTypes, Sequelize } from 'sequelize'
 
 class Card extends Model {
-  private issue_id!: number
-  private issue_url!: string
-  private title!: string
-  private description?: string
-  private number!: number
-  private order!: number
-  private board_id!: number
-  private readonly createdAt!: Date
-  private readonly updateAt!: Date
-  private closedAt!: Date
+  public issue_id!: number
+  public issue_url!: string
+  public title!: string
+  public description?: string
+  public number!: number
+  public order!: number
+  public board_id!: number
+  public readonly createdAt!: Date
+  public readonly updateAt!: Date
+  public closedAt!: Date
 
   public static initScheme (sequelize: Sequelize) {
     this.init({
