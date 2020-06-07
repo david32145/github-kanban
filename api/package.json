@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "migration:up": "sequelize-cli db:migrate"
   },
   "dependencies": {
     "axios": "^0.19.2",

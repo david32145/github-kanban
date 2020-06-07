@@ -1,6 +1,6 @@
 # GitHub Kanban API
 
-## Collections
+## Models
 
 ### Repository
 
@@ -28,6 +28,7 @@
 - issue_url (the url for an issue)
 - title (Title of card);
 - description (description of card);
+- number (number of an issue)
 - order (order of card in list);
 - board_id (references for an board);
 - created_at (date of create);
