@@ -1,9 +1,9 @@
 import { Sequelize } from 'sequelize'
 
-import Board from './Board'
-import Card from './Card'
-import Repository from './Repository'
-import User from './User'
+import Board from './models/Board'
+import Card from './models/Card'
+import Repository from './models/Repository'
+import User from './models/User'
 
 const sequelize = new Sequelize('mysql://root:root@localhost:13306/github_kanban')
 

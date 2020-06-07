@@ -1,11 +1,10 @@
 import { Request, Response } from 'express'
-import Repository from 'database/Repository'
-import User from 'database/User'
-import GitHubAPI from 'services/githubApi'
-import Board from 'database/Board'
-import Card from 'database/Card'
+import Repository from 'database/models/Repository'
+import User from 'database/models/User'
+import GitHubAPI from 'rest/GitHubApi'
+import Board from 'database/models/Board'
+import Card from 'database/models/Card'
 import CardRepository from 'database/repository/CardRepository'
-import { Op } from 'sequelize'
 
 interface CardCreateRequest {
   title: string
@@ -27,14 +26,14 @@ class CardController {
   public async store (req: Request<RouteParams, {}, CardCreateRequest>, res: Response): Promise<Response> {
     const user_id = req.headers.authorization as string
     console.log(user_id)
-    const repository: Repository = await Repository.findOne({
+    const repository = await Repository.findOne({
       where: {
         repository_id: req.params.repository_id,
         user_id
       }
     })
     if (repository) {
-      const user: User = await User.findByPk(user_id)
+      const user = await User.findByPk(user_id)
       const response = await GitHubAPI.post<GitHubIssueCreateResponse>(`repos/${user?.username}/${repository.name}/issues`, {
         title: req.body.title,
         body: req.body.github_description
@@ -50,7 +49,7 @@ class CardController {
         },
         include: ['boards']
       })
-      const board: Board = await Board.findOne({
+      const board = await Board.findOne({
         where: {
           repository_id: req.params.repository_id,
           type: 'TODO'
@@ -63,7 +62,7 @@ class CardController {
         number: response.data.number,
         description: req.body.description,
         order: countCardsOpened + 1,
-        board_id: board.id
+        board_id: board?.id
       })
 
       return res.status(201).json(card)
@@ -75,37 +74,39 @@ class CardController {
   }
 
   public async moveCard (req: Request, res: Response): Promise<Response> {
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const user_id = String(req.headers.authorization)
     const repository_id = String(req.params.repository_id)
+
     type X = {[key: string]: number}
     const { card_id, to_board_id, to_card_id }: X = req.body
     const toBoardCount = await CardRepository.countCardByBoard(to_board_id)
-    const card: Card = await Card.findByPk(card_id)
-    const oldBoardId = card.board_id
-    const oldOrder = card.order
-    if (card.board_id === to_board_id) {
-      const toCard: Card = await Card.findByPk(to_card_id)
-      if (card.order < toCard.order) {
-        await CardRepository.shiftLeft(to_board_id, oldOrder, toCard.order)
+    const card = await Card.findByPk(card_id)
+    const oldBoardId = card?.board_id
+    const oldOrder = card?.order
+    if (card?.board_id === to_board_id) {
+      const toCard = await Card.findByPk(to_card_id)
+      if (card.order < toCard!.order) {
+        await CardRepository.shiftLeft(to_board_id, oldOrder || 0, toCard?.order || 0)
       } else {
-        await CardRepository.shiftRight(to_board_id, oldOrder, toCard.order)
+        await CardRepository.shiftRight(to_board_id, oldOrder || 0, toCard?.order || 0)
       }
-      card.order = toCard.order
+      card.order = toCard?.order || 0
       await card.save()
     } else {
       if (toBoardCount === 0) {
-        card.board_id = to_board_id
-        card.order = 1
-        await card.save()
+        card!.board_id = to_board_id
+        card!.order = 1
+        await card?.save()
       } else {
-        const toCard: Card = await Card.findByPk(to_card_id)
-        await CardRepository.shiftRightEnd(to_board_id, toCard.order)
+        const toCard = await Card.findByPk(to_card_id)
+        await CardRepository.shiftRightEnd(to_board_id, toCard!.order)
 
-        card.order = toCard.order
-        card.board_id = to_board_id
-        await card.save()
+        card!.order = toCard!.order
+        card!.board_id = to_board_id
+        await card!.save()
       }
-      await CardRepository.shiftLeftEnd(oldBoardId, oldOrder)
+      await CardRepository.shiftLeftEnd(oldBoardId || 0, oldOrder || 0)
     }
     return res.status(200).json()
   }

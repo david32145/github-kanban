@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { AxiosError } from 'axios'
-import GitHubAPI from 'services/githubApi'
-import User from 'database/User'
-import Board from 'database/Board'
-import Repository from 'database/Repository'
+import GitHubAPI from 'rest/GitHubApi'
+import User from 'database/models/User'
+import Board from 'database/models/Board'
+import Repository from 'database/models/Repository'
 import { extractAPIError } from 'utils/apiError'
 import { getDefauldBoards } from 'utils/boardUtils'
 import Sequelize from 'sequelize'
-import Card from 'database/Card'
+import Card from 'database/models/Card'
 
 interface RepositoryCreateBody {
   repo_name: string
@@ -29,10 +29,10 @@ class RepositoryController {
     const { repo_name, repo_owner } = req.body
     try {
       const user_id = req.headers.authorization as string
-      const user: User = await User.findByPk(user_id)
+      const user = await User.findByPk(user_id)
       const response = await GitHubAPI.get<GitHubRepoResponse>(`/repos/${repo_owner}/${repo_name}`, {
         headers: {
-          Authorization: `token ${user.access_token}`
+          Authorization: `token ${user?.access_token}`
         }
       })
       const repositoryData = {
@@ -40,7 +40,7 @@ class RepositoryController {
         repository_url: response.data.html_url,
         name: response.data.name,
         owner: response.data.owner.login,
-        user_id: user.id,
+        user_id: user?.id,
         description: response.data.description
       }
       const isNew: boolean = await Repository.upsert(repositoryData)
@@ -48,7 +48,7 @@ class RepositoryController {
       if (!isNew) {
         return res.status(200).json(repository)
       }
-      await Board.bulkCreate(getDefauldBoards(repository.repository_id))
+      await Board.bulkCreate(getDefauldBoards(repository!.repository_id))
 
       return res.status(201).send(repository)
     } catch (err) {

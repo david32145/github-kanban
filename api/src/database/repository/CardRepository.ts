@@ -1,4 +1,4 @@
-import Card from 'database/Card'
+import Card from 'database/models/Card'
 import { Op } from 'sequelize'
 
 class CardRepository {

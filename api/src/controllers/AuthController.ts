@@ -1,63 +1,18 @@
 import { Request, Response } from 'express'
 
-import axios from 'axios'
-import GitHubAPI from 'services/githubApi'
+import GitHubService from 'services/GitHubService'
 
-import User from 'database/User'
-
-const credentials = {
-  client_id: '94704ff763ce7e8489e9',
-  client_secret: '32ad632712a117b09ba96420a1e086281b822977'
-}
-
-interface GitHubTokenResponse {
-  access_token: string
-  type: string
-  scope: string
-}
-
-interface GitHubUserResponse {
-  id: number
-  login: string
-  bio: string
-}
+import User from 'database/models/User'
+import UserRepository from 'database/repository/UserRepository'
+import ApiError from 'erros/ApiError'
 
 class AuthController {
   public async store (req: Request, res: Response): Promise<Response> {
-    if (req.query.code) {
-      console.log(req.query.code)
-      const authResponse = await axios.post<GitHubTokenResponse>('https://github.com/login/oauth/access_token', {
-        client_id: credentials.client_id,
-        client_secret: credentials.client_secret,
-        code: req.query.code
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        }
-      })
-      const userResponse = await GitHubAPI.get<GitHubUserResponse>('/user', {
-        headers: {
-          Authorization: `token ${authResponse.data.access_token}`
-        }
-      })
-      type X = [User, boolean]
-      const [user, created]: X = await User.findOrCreate({
-        where: {
-          username: userResponse.data.login
-        },
-        defaults: {
-          username: userResponse.data.login,
-          description: userResponse.data.bio,
-          access_token: authResponse.data.access_token
-        }
-      })
-
-      if (!created) {
-        user.access_token = authResponse.data.access_token
-        user.username = userResponse.data.login
-        user.description = userResponse.data.bio
-      }
+    try {
+      const code = String(req.query.code)
+      const auth = await GitHubService.login(code)
+      const githubUser = await GitHubService.getGitHubUser(auth.access_token)
+      const [user] = await UserRepository.findOrCreateByUsername(githubUser.login, githubUser.bio, auth.access_token)
 
       return res.status(200).json({
         id: user.id,
@@ -66,13 +21,17 @@ class AuthController {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
       })
+    } catch (err) {
+      if (err instanceof ApiError) {
+        return res.status(err.code).json(err.toJSON())
+      }
+      return res.status(500).send()
     }
-    return res.status(400).send('Algo deu errado')
   }
 
   public async show (req: Request, res: Response): Promise<Response> {
     const username = String(req.params.username)
-    const user: User = await User.findOne({
+    const user = await User.findOne({
       where: {
         username
       },
