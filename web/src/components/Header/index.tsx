@@ -25,9 +25,6 @@ const HeaderComponent: React.FC = () => {
           <LinkButton to="/repo/new" pathname={location.pathname}>
             Add repo
           </LinkButton>
-          <LinkButton to="/board" pathname={location.pathname}>
-            Board
-          </LinkButton>
           <LinkButton
             style={{ marginLeft: "auto", marginRight: 36 }}
             to="/logout"

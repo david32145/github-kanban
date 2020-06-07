@@ -52,7 +52,6 @@ class RepositoryController {
 
       return res.status(201).send(repository)
     } catch (err) {
-      console.log(err)
       const error = extractAPIError(err as AxiosError)
       return res.status(error.status).send(error)
     }

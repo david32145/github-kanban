@@ -1,5 +1,6 @@
 import { User } from "models";
 import LoginService from "services/LoginService";
+import { history } from "historyFactory";
 
 export enum AuthActionType {
   ASYNC_SING_IN = "@auth/async_sing_in",
@@ -65,6 +66,7 @@ class AuthService {
 
   public logout(): AuthAction {
     LoginService.logout();
+    history.push("/login");
     return {
       type: AuthActionType.LOGOUT,
     };
