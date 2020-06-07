@@ -9,8 +9,7 @@ import { AuthSagaAction, AuthActionType, AuthAction } from "./reducer";
 
 type SingInReponse = AxiosResponse<User>;
 
-const GITHUB_SING_IN_URL =
-  "https://github.com/login/oauth/authorize?client_id=94704ff763ce7e8489e9&scope=repo";
+const GITHUB_SING_IN_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_OPEN_CLIENT_ID}&scope=repo`;
 
 function* singIn(action: AuthSagaAction) {
   try {

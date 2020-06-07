@@ -4,11 +4,6 @@ import GitHubAPI from 'rest/GitHubApi'
 
 import { GitHubTokenResponse, GitHubUserResponse } from 'interfaces/github'
 
-const credentials = {
-  client_id: '94704ff763ce7e8489e9',
-  client_secret: '32ad632712a117b09ba96420a1e086281b822977'
-}
-
 class GitHubService {
   public async login (code?: string): Promise<GitHubTokenResponse> {
     if (!code) {
@@ -16,8 +11,8 @@ class GitHubService {
     }
     try {
       const response = await axios.post<GitHubTokenResponse>('https://github.com/login/oauth/access_token', {
-        client_id: process.env.CLIENT_ID,
-        client_secret: process.env.CLIENT_SECRET,
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
         code
       }, {
         headers: {

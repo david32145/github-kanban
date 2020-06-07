@@ -4,8 +4,9 @@ import Board from './models/Board'
 import Card from './models/Card'
 import Repository from './models/Repository'
 import User from './models/User'
+import { development } from 'config/database'
 
-const sequelize = new Sequelize('mysql://root:root@localhost:13306/github_kanban')
+const sequelize = new Sequelize(`${development.dialect}://${development.username}:${development.password}@${development.host}:${development.port}/${development.database}`)
 
 Board.initScheme(sequelize)
 Card.initScheme(sequelize)
