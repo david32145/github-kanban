@@ -60,7 +60,9 @@ class RepositoryController {
 
   public async show (req: Request, res: Response): Promise<Response> {
     const repository_id = String(req.params.repository_id)
-    const repository = await Repository.findByPk(repository_id, {
+    const user_id = req.headers.authorization as string
+    const repository = await Repository.findOne({
+      where: { repository_id, user_id },
       include: [{
         association: 'boards',
         include: ['cards']
@@ -82,7 +84,9 @@ class RepositoryController {
   }
 
   public async index (req: Request, res: Response): Promise<Response> {
+    const user_id = req.headers.authorization as string
     const repositories = await Repository.findAll({
+      where: { user_id },
       attributes: {
         include: [
 
@@ -91,7 +95,7 @@ class RepositoryController {
               SELECT count(*) FROM cards JOIN boards on
                 cards.board_id = boards.id
                 WHERE boards.repository_id = Repository.repository_id
-                AND cards.closedAt != NULL
+                AND cards.closedAt IS NOT NULL
           )`),
             'completed_cards'
           ],

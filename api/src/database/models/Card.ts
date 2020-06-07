@@ -10,7 +10,7 @@ class Card extends Model {
   public board_id!: number
   public readonly createdAt!: Date
   public readonly updateAt!: Date
-  public closedAt!: Date
+  public closedAt?: Date
 
   public static initScheme (sequelize: Sequelize) {
     this.init({

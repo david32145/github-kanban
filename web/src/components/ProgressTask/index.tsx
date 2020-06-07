@@ -14,7 +14,7 @@ function calculatePercentage(
   if (total_cards === 0) {
     return "100";
   }
-  return Number(completed_cards / total_cards).toFixed(0) || "0";
+  return Number((completed_cards / total_cards) * 100).toFixed(0);
 }
 
 const ProgressTask: React.FC<ProgressTaskProps> = ({

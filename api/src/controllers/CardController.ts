@@ -77,6 +77,13 @@ class CardController {
     /* eslint-disable @typescript-eslint/no-unused-vars */
     const user_id = String(req.headers.authorization)
     const repository_id = String(req.params.repository_id)
+    const user = await User.findByPk(user_id)
+    const repository = await Repository.findOne({
+      where: {
+        repository_id,
+        user_id
+      }
+    })
 
     type X = {[key: string]: number}
     const { card_id, to_board_id, to_card_id }: X = req.body
@@ -94,6 +101,30 @@ class CardController {
       card.order = toCard?.order || 0
       await card.save()
     } else {
+      const toBoard = await Board.findByPk(to_board_id)
+      const oldBoard = await Board.findByPk(oldBoardId)
+      if (toBoard?.type === 'CLOSED') {
+        card!.closedAt = new Date()
+        await GitHubAPI.patch(`/repos/${user?.username}/${repository?.name}/issues/${card?.number}`, {
+          state: 'closed'
+        }, {
+          headers: {
+            Authorization: `token ${user?.access_token}`
+          }
+        })
+      }
+
+      if (oldBoard?.type === 'CLOSED') {
+        card!.closedAt = undefined
+        await GitHubAPI.patch(`/repos/${user?.username}/${repository?.name}/issues/${card?.number}`, {
+          state: 'open'
+        }, {
+          headers: {
+            Authorization: `token ${user?.access_token}`
+          }
+        })
+      }
+
       if (toBoardCount === 0) {
         card!.board_id = to_board_id
         card!.order = 1
