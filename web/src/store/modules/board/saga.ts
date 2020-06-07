@@ -3,7 +3,7 @@ import APIRestService from "services/APIRestService";
 import { ActionBoardTypes, BoardAction } from "./reducer";
 
 function* move(action: BoardAction) {
-  yield delay(2000);
+  yield delay(500);
   try {
     yield call(
       APIRestService.put,

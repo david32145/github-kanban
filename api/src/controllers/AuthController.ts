@@ -7,20 +7,18 @@ import UserRepository from 'database/repository/UserRepository'
 import ApiError from 'erros/ApiError'
 
 class AuthController {
-  public async store (req: Request, res: Response): Promise<Response> {
+  public async store (req: Request, res: Response): Promise<Response | void> {
     try {
       const code = String(req.query.code)
       const auth = await GitHubService.login(code)
       const githubUser = await GitHubService.getGitHubUser(auth.access_token)
-      const [user] = await UserRepository.findOrCreateByUsername(githubUser.login, githubUser.bio, auth.access_token)
+      await UserRepository.findOrCreateByUsername(githubUser.login, githubUser.bio, auth.access_token)
 
-      return res.status(200).json({
-        id: user.id,
-        username: user.username,
-        description: user.description,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      })
+      const url = process.env.FRONT_END_LOGIN_URL
+      if (url) {
+        return res.status(200).redirect(url)
+      }
+      throw new Error('front end url is not provider')
     } catch (err) {
       if (err instanceof ApiError) {
         return res.status(err.code).json(err.toJSON())
